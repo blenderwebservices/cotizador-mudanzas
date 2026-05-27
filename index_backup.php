@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'config_backup.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
