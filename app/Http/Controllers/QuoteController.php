@@ -26,7 +26,7 @@ class QuoteController extends Controller
      */
     public function getItems()
     {
-        $items = Item::where('activo', true)->get();
+        $items = Item::where('activo', true)->orderBy('orden')->get();
         return response()->json($items);
     }
 
@@ -152,10 +152,10 @@ class QuoteController extends Controller
      */
     public function clientPdf($quoteId)
     {
-        $quote = Quote::with('quoteItems.item')->findOrFail($quoteId);
+        $quote = Quote::with('items.item')->findOrFail($quoteId);
         $data = [
             'quote' => $quote,
-            'items' => $quote->quoteItems,
+            'items' => $quote->items,
         ];
         $pdf = Pdf::loadView('pdf.client', $data);
         return $pdf->stream('cotizacion_cliente_' . $quote->id . '.pdf');
@@ -166,10 +166,10 @@ class QuoteController extends Controller
      */
     public function adminPdf($quoteId)
     {
-        $quote = Quote::with('quoteItems.item')->findOrFail($quoteId);
+        $quote = Quote::with('items.item')->findOrFail($quoteId);
         $data = [
             'quote' => $quote,
-            'items' => $quote->quoteItems,
+            'items' => $quote->items,
         ];
         $pdf = Pdf::loadView('pdf.admin', $data);
         return $pdf->stream('cotizacion_admin_' . $quote->id . '.pdf');

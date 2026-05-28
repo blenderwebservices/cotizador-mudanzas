@@ -31,7 +31,7 @@ require_once 'config_backup.php';
                     },
                     colors: {
                         brand: {
-                            DEFAULT: '#ED3426', // Mudango Orange
+                            DEFAULT: '#ED3426', // Mudanzas Hermanos Monroy Orange
                             neon: '#ff5544',
                             dark: '#0f172a', // slate-900
                             darker: '#020617', // slate-950
@@ -116,7 +116,7 @@ require_once 'config_backup.php';
                     <span class="material-symbols-rounded text-white text-xl">smart_toy</span>
                 </div>
                 <div>
-                    <h1 class="text-sm font-mono text-gray-400 tracking-wider">SISTEMA MUDANGO</h1>
+                    <h1 class="text-sm font-mono text-gray-400 tracking-wider">SISTEMA MUDANZAS MONROY</h1>
                     <p class="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400" x-text="step < 9 ? 'Asistente de IA' : 'Análisis Completado'"></p>
                 </div>
             </div>
@@ -434,7 +434,7 @@ require_once 'config_backup.php';
                         const origin = this.data.origin || 'tu origen';
                         const dest = this.data.destination || 'tu nuevo destino';
                         
-                        const prompt = `Actúa como el IA central de Mudango. Escribe un párrafo hiper-personalizado, amistoso y sutilmente futurista (máximo 3 oraciones cortas). Resume la mudanza de ${this.data.name} desde "${origin}" hacia "${dest}". Menciona que transportaremos estos ítems: "${itemsList || 'unas cuantas cajas'}". Usa formato HTML <b> para destacar el nombre de las ciudades/direcciones y no uses markdown.`;
+                        const prompt = `Actúa como el IA central de Mudanzas Monroy. Escribe un párrafo hiper-personalizado, amistoso y sutilmente futurista (máximo 3 oraciones cortas). Resume la mudanza de ${this.data.name} desde "${origin}" hacia "${dest}". Menciona que transportaremos estos ítems: "${itemsList || 'unas cuantas cajas'}". Usa formato HTML <b> para destacar el nombre de las ciudades/direcciones y no uses markdown.`;
 
                         const payload = {
                             contents: [{ parts: [{ text: prompt }] }],

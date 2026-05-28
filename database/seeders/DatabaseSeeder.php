@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Seed Admin User for Filament
         User::updateOrCreate(
-            ['email' => 'admin@mudango.com'],
+            ['email' => 'admin@mudanzashnosmonroy.com'],
             [
-                'name' => 'Administrador Mudango',
+                'name' => 'Administrador Mudanzas Monroy',
                 'password' => Hash::make('password'),
             ]
         );
@@ -29,19 +29,19 @@ class DatabaseSeeder extends Seeder
         $agents = [
             [
                 'name' => 'Carlos Mendoza',
-                'email' => 'carlos@mudango.com',
+                'email' => 'carlos@mudanzashnosmonroy.com',
                 'phone' => '555-0199',
                 'status' => 'active',
             ],
             [
-                'name' => 'Sofía Gómez',
-                'email' => 'sofia@mudango.com',
+                'name' => 'Dulce Monroy',
+                'email' => 'dulce@mudanzashnosmonroy.com',
                 'phone' => '555-0211',
                 'status' => 'active',
             ],
             [
-                'name' => 'Alejandro Ruiz',
-                'email' => 'alejandro@mudango.com',
+                'name' => 'Diego Monroy',
+                'email' => 'diego@mudanzashnosmonroy.com',
                 'phone' => '555-0344',
                 'status' => 'inactive',
             ],

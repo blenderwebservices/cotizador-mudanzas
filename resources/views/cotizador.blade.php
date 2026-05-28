@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizador de Mudanzas · Mudango</title>
-    <meta name="description" content="Cotiza tu mudanza en minutos con nuestra tecnología de inteligencia artificial. Mudango - Servicio de mudanzas profesional.">
+    <title>Cotizador de Mudanzas · Mudanzas Hermanos Monroy</title>
+    <meta name="description" content="Cotiza tu mudanza en minutos con nuestra tecnología de inteligencia artificial. Mudanzas Hermanos Monroy - Servicio de mudanzas profesional.">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -132,7 +132,7 @@
                     <span class="material-symbols-rounded text-white text-xl">local_shipping</span>
                 </div>
                 <div>
-                    <p class="text-xs font-mono text-gray-400 tracking-widest uppercase">Sistema Mudango</p>
+                    <p class="text-xs font-mono text-gray-400 tracking-widest uppercase">Sistema Mudanzas Hermanos Monroy</p>
                     <p class="text-base font-semibold text-white" x-text="step < 9 ? 'Cotizador Inteligente' : 'Análisis Completado'"></p>
                 </div>
             </div>
@@ -386,7 +386,7 @@
 
                 <!-- Contact confirmation -->
                 <div class="bg-white/5 rounded-xl p-4 border border-white/10 text-sm">
-                    <p class="text-gray-400">Un agente de <span class="text-brand-neon font-semibold">Mudango</span> se pondrá en contacto a través de <span class="font-semibold text-white" x-text="data.email"></span> o al <span class="font-semibold text-white" x-text="data.phone || 'número proporcionado'"></span>.</p>
+                    <p class="text-gray-400">Un agente de <span class="text-brand-neon font-semibold">Mudanzas Hermanos Monroy</span> se pondrá en contacto a través de <span class="font-semibold text-white" x-text="data.email"></span> o al <span class="font-semibold text-white" x-text="data.phone || 'número proporcionado'"></span>.</p>
                 </div>
                 <div class="flex space-x-4 mt-4 justify-center">
                     <button id="btn-pdf-client" @click="window.open(`/quotes/${results.quote_id || results.quoteId}/pdf/client`, '_blank')" class="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-neon transition-colors">Descargar PDF (Cliente)</button>

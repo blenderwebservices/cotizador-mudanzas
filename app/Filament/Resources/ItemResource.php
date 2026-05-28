@@ -28,7 +28,14 @@ class ItemResource extends Resource
                         ->required(),
                     Forms\Components\TextInput::make('icon')
                         ->label('Ícono (emoji)')
-                        ->placeholder('🛏️'),
+                        ->placeholder('🛏️')
+                        ->maxLength(4)
+                        ->hint('Mac: ⌘ + Ctrl + Espacio · Win: Win + .')
+                        ->hintIcon('heroicon-m-face-smile')
+                        ->extraInputAttributes([
+                            'style' => 'font-size: 1.5rem; text-align: center; cursor: pointer;',
+                            'onclick' => 'this.select()',
+                        ]),
                     Forms\Components\Select::make('nivel_riesgo')
                         ->label('Nivel de Riesgo')
                         ->options(['bajo' => '🟢 Bajo', 'medio' => '🟡 Medio', 'alto' => '🔴 Alto'])
@@ -105,6 +112,8 @@ class ItemResource extends Resource
                 ->label('Activo')
                 ->boolean(),
         ])
+        ->reorderable('orden')
+        ->defaultSort('orden')
         ->filters([
             Tables\Filters\TernaryFilter::make('activo')->label('Activos'),
         ])
