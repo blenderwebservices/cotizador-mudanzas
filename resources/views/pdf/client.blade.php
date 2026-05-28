@@ -20,10 +20,11 @@
     @if($quote->telefono_cliente)
         <p><strong>Teléfono:</strong> {{ $quote->telefono_cliente }}</p>
     @endif
-    <p><strong>Origen:</strong> {{ $quote->origen }}</p>
-    <p><strong>Destino:</strong> {{ $quote->destino }}</p>
+    <p><strong>Origen:</strong> {{ $quote->origen }} (Piso {{ $quote->pisos_origen }})</p>
+    <p><strong>Destino:</strong> {{ $quote->destino }} (Piso {{ $quote->pisos_destino }})</p>
+    <p><strong>Distancia estimada:</strong> {{ number_format($quote->distancia_km, 1) }} km</p>
     <p><strong>Volumen total:</strong> {{ number_format($quote->volumen_total_m3, 2) }} m³</p>
-    <p><strong>Precio sugerido:</strong> ${{ number_format($quote->precio_sugerido, 2) }}</p>
+    <p><strong>Precio del servicio:</strong> ${{ number_format($quote->precio_sugerido, 2) }}</p>
     <h2>Items seleccionados</h2>
     <table>
         <thead>

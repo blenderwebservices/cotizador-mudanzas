@@ -30,6 +30,16 @@ class Quote extends Model
         'precio_sugerido' => 'decimal:2',
         'detalles_json' => 'array',
         'personas_sugeridas' => 'integer',
+        'pisos_origen' => 'integer',
+        'distancia_caminata_origen_m' => 'integer',
+        'pisos_destino' => 'integer',
+        'ascensor_destino' => 'boolean',
+        'distancia_caminata_destino_m' => 'integer',
+        'costo_actividad_comercial' => 'decimal:2',
+        'costo_actividad_embalaje' => 'decimal:2',
+        'costo_actividad_carga' => 'decimal:2',
+        'costo_actividad_transporte' => 'decimal:2',
+        'costo_actividad_descarga' => 'decimal:2',
     ];
 
     public function agent(): BelongsTo

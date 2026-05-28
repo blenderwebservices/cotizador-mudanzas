@@ -55,14 +55,51 @@ class QuoteResource extends Resource
                         ->disabled(),
                 ])->columns(3),
 
-            Forms\Components\Section::make('Desglose Financiero')
+            Forms\Components\Section::make('Complejidad Logística (Drivers ABC)')
                 ->schema([
-                    Forms\Components\TextInput::make('material_empaque_costo')->label('Material de empaque')->prefix('$')->disabled(),
-                    Forms\Components\TextInput::make('costo_combustible')->label('Combustible')->prefix('$')->disabled(),
-                    Forms\Components\TextInput::make('comida_trabajadores_costo')->label('Comida trabajadores')->prefix('$')->disabled(),
-                    Forms\Components\TextInput::make('salarios_costo')->label('Salarios')->prefix('$')->disabled(),
-                    Forms\Components\TextInput::make('gastos_totales')->label('Gastos Totales')->prefix('$')->disabled(),
-                    Forms\Components\TextInput::make('ganancia_estimada')->label('Ganancia estimada')->prefix('$')->disabled(),
+                    Forms\Components\TextInput::make('pisos_origen')->label('Pisos Origen')->disabled(),
+                    Forms\Components\TextInput::make('distancia_caminata_origen_m')->label('Caminata Origen (m)')->suffix('m')->disabled(),
+                    Forms\Components\Placeholder::make('ascensor_origen_placeholder')
+                        ->label('Ascensor Origen')
+                        ->content(fn ($record) => ($record && $record->detalles_json && ($record->detalles_json['elevatorStart'] ?? 'no') === 'yes') ? 'Sí' : 'No'),
+
+                    Forms\Components\TextInput::make('pisos_destino')->label('Pisos Destino')->disabled(),
+                    Forms\Components\TextInput::make('distancia_caminata_destino_m')->label('Caminata Destino (m)')->suffix('m')->disabled(),
+                    Forms\Components\Toggle::make('ascensor_destino')->label('Ascensor Destino')->disabled(),
+                ])->columns(3),
+
+            Forms\Components\Section::make('Desglose de Actividades ABC')
+                ->schema([
+                    Forms\Components\TextInput::make('costo_actividad_comercial')
+                        ->label('Actividad A: Comercial y Planificación')
+                        ->prefix('$')->disabled(),
+                    
+                    Forms\Components\TextInput::make('costo_actividad_embalaje')
+                        ->label('Actividad B: Embalaje y Preparación')
+                        ->prefix('$')->disabled(),
+                    
+                    Forms\Components\TextInput::make('costo_actividad_carga')
+                        ->label('Actividad C: Carga y Estiba')
+                        ->prefix('$')->disabled(),
+                    
+                    Forms\Components\TextInput::make('costo_actividad_transporte')
+                        ->label('Actividad D: Transporte (Conducción)')
+                        ->prefix('$')->disabled(),
+                    
+                    Forms\Components\TextInput::make('costo_actividad_descarga')
+                        ->label('Actividad E: Descarga y Desembalaje')
+                        ->prefix('$')->disabled(),
+
+                    Forms\Components\Placeholder::make('space')->label('')->columnSpan(1),
+
+                    Forms\Components\TextInput::make('gastos_totales')
+                        ->label('Costo Operativo Total (Gastos)')
+                        ->prefix('$')->disabled(),
+                    
+                    Forms\Components\TextInput::make('ganancia_estimada')
+                        ->label('Ganancia Estimada')
+                        ->prefix('$')->disabled(),
+                    
                     Forms\Components\TextInput::make('precio_sugerido')
                         ->label('PRECIO SUGERIDO')
                         ->prefix('$')

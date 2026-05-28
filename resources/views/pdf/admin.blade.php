@@ -25,25 +25,28 @@
     <p><strong>Origen:</strong> {{ $quote->origen }}</p>
     <p><strong>Destino:</strong> {{ $quote->destino }}</p>
     <div class="section">
-        <h2>Resumen de la Cotización</h2>
+        <h2>Drivers de Complejidad Logística</h2>
         <table>
             <tbody>
-                <tr><th>Volumen Total (m³)</th><td>{{ number_format($quote->volumen_total_m3, 2) }}</td></tr>
-                <tr><th>Distancia Estimada (km)</th><td>{{ number_format($quote->distancia_km, 2) }}</td></tr>
-                <tr><th>Vehículo Sugerido</th><td>{{ $quote->vehiculo_sugerido_id }}</td></tr>
-                <tr><th>Personal Sugerido</th><td>{{ $quote->personas_sugeridas }}</td></tr>
-                <tr><th>Tiempo de Traslado (h)</th><td>{{ $quote->tiempo_traslado_horas }}</td></tr>
-                <tr><th>Tiempo de Empaque (min)</th><td>{{ $quote->tiempo_empaque_total_min }}</td></tr>
-                <tr><th>Costo de Empaque Total</th><td>${{ number_format($quote->costo_empaque_total, 2) }}</td></tr>
-                <tr><th>Combustible (L)</th><td>{{ number_format($quote->combustible_l, 2) }}</td></tr>
-                <tr><th>Costo Combustible</th><td>${{ number_format($quote->costo_combustible, 2) }}</td></tr>
-                <tr><th>Material de Empaque</th><td>${{ number_format($quote->material_empaque_costo, 2) }}</td></tr>
-                <tr><th>Comida Trabajadores</th><td>${{ number_format($quote->comida_trabajadores_costo, 2) }}</td></tr>
-                <tr><th>Salarios</th><td>${{ number_format($quote->salarios_costo, 2) }}</td></tr>
-                <tr><th>Gastos Totales</th><td>${{ number_format($quote->gastos_totales, 2) }}</td></tr>
-                <tr><th>Ganancia Estimada</th><td>${{ number_format($quote->ganancia_estimada, 2) }}</td></tr>
-                <tr><th>Precio Sugerido</th><td>${{ number_format($quote->precio_sugerido, 2) }}</td></tr>
-                <tr><th>Ganancia Sugerida</th><td>${{ number_format($quote->ganancia_estimada, 2) }}</td></tr>
+                <tr><th>Origen</th><td>Piso {{ $quote->pisos_origen }} · Ascensor: {{ ($quote->detalles_json['elevatorStart'] ?? 'no') === 'yes' ? 'Sí' : 'No' }} · Caminata: {{ $quote->distancia_caminata_origen_m }} m</td></tr>
+                <tr><th>Destino</th><td>Piso {{ $quote->pisos_destino }} · Ascensor: {{ $quote->ascensor_destino ? 'Sí' : 'No' }} · Caminata: {{ $quote->distancia_caminata_destino_m }} m</td></tr>
+                <tr><th>Vehículo y Personal</th><td>{{ $quote->vehiculoSugerido ? $quote->vehiculoSugerido->nombre : 'N/A' }} · {{ $quote->personas_sugeridas }} cargadores</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Desglose de Actividades (Modelo ABC)</h2>
+        <table>
+            <tbody>
+                <tr><th>Actividad A: Comercial y Planificación</th><td>${{ number_format($quote->costo_actividad_comercial, 2) }}</td></tr>
+                <tr><th>Actividad B: Embalaje y Preparación</th><td>${{ number_format($quote->costo_actividad_embalaje, 2) }}</td></tr>
+                <tr><th>Actividad C: Carga y Estiba</th><td>${{ number_format($quote->costo_actividad_carga, 2) }}</td></tr>
+                <tr><th>Actividad D: Transporte (Conducción)</th><td>${{ number_format($quote->costo_actividad_transporte, 2) }}</td></tr>
+                <tr><th>Actividad E: Descarga y Desembalaje</th><td>${{ number_format($quote->costo_actividad_descarga, 2) }}</td></tr>
+                <tr style="background: #1e293b; font-weight: bold;"><th>Costo Operativo Total (Gastos)</th><td>${{ number_format($quote->gastos_totales, 2) }}</td></tr>
+                <tr style="font-weight: bold; color: #10b981;"><th>Ganancia Estimada</th><td>${{ number_format($quote->ganancia_estimada, 2) }}</td></tr>
+                <tr style="background: #ed3426; color: #fff; font-weight: bold;"><th>PRECIO SUGERIDO AL CLIENTE</th><td>${{ number_format($quote->precio_sugerido, 2) }}</td></tr>
             </tbody>
         </table>
     </div>
