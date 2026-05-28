@@ -45,7 +45,49 @@ php artisan serve
 
 Accede a:
 - Frontend: `http://cotizador-mudanzas.test/`
-- Panel admin: `http://cotizador-mudanzas.test/admin` (credenciales: **admin@hermanosmonroy.com** / `password`)
+- Panel admin: `http://cotizador-mudanzas.test/admin` (credenciales: **admin@mudanzashnosmonroy.com** / `password`)
+
+## 📊 Modelo de Costeo ABC (Activity-Based Costing)
+
+La aplicación implementa un sistema avanzado de **Costeo Basado en Actividades (ABC)** para calcular presupuestos rentables y precisos. En lugar de aplicar márgenes genéricos, el costeo ABC asume que *las mudanzas consumen actividades, y las actividades consumen recursos*.
+
+### 1. Las 5 Actividades del Modelo
+El cálculo del costo operativo se desglosa en 5 actividades principales parametrizables en `config/mudanzas.php`:
+
+1. **Actividad A: Comercial y Planificación**
+   - **Inductor (Driver):** Número de cotización.
+   - **Cálculo:** Tarifa administrativa fija (ej. `$150.00 MXN`).
+2. **Actividad B: Embalaje y Preparación**
+   - **Inductor (Driver):** Cantidad de ítems + horas de embalaje y desarme.
+   - **Cálculo:** Costo acumulado de materiales de cada ítem + (Tiempo de embalaje y desarme total en horas × Salario por hora de operario × Cantidad de personal). Añade 15 minutos extras automáticos por cada mueble que tenga la bandera `requiere_desarmarse = true`.
+3. **Actividad C: Carga y Estiba**
+   - **Inductor (Driver):** Volumen total ($m^3$) + Dificultad de acceso en origen (pisos y caminata).
+   - **Cálculo:** (Volumen × Tarifa base de carga) + Recargos por escaleras (si no hay elevador y es piso $> 1$) + Recargo por caminata (si la distancia al camión supera los 10 metros).
+4. **Actividad D: Transporte (Conducción)**
+   - **Inductor (Driver):** Kilómetros recorridos (calculados con precisión mediante Gemini API).
+   - **Cálculo:** Combustible consumido + Costo de depreciación/seguro por Km (específico para el vehículo sugerido) + Salarios del personal durante las horas de traslado.
+5. **Actividad E: Descarga y Desembalaje**
+   - **Inductor (Driver):** Volumen total ($m^3$) + Dificultad de acceso en destino (pisos y caminata).
+   - **Cálculo:** (Volumen × Tarifa base de descarga) + Recargos por escaleras en destino + Recargos por caminata en destino.
+
+---
+
+### 2. Impacto en el Asistente (Wizard)
+El asistente pasó de ser un formulario logístico lineal y simple a un colector de complejidad estructural:
+- **Paso 5 (Origen):** Solicita el número de pisos de origen, disponibilidad de ascensor y distancia estimada hasta el camión.
+- **Paso 6 (Destino):** Añade un nuevo paso idéntico para recopilar los mismos drivers de acceso (pisos, ascensor y distancia) en el domicilio de destino.
+- El backend procesa estos drivers en `QuoteCalculator` y almacena tanto los datos logísticos como el costo detallado de cada una de las 5 actividades en la base de datos.
+
+---
+
+### 3. Cálculo del Presupuesto Final
+Una vez calculado el costo operativo total sumando las 5 actividades:
+1. Se le añade el margen de ganancia configurable (`ganancia_porcentaje`, por defecto 50% extra).
+2. Se compara el resultado con la `tarifa_minima` configurada.
+3. Si el total es inferior, se aplica la tarifa mínima.
+4. El desglose detallado se almacena en la tabla de base de datos para auditoría, se muestra en el panel Filament y se adjunta de forma desglosada en el PDF administrativo para el cálculo de comisiones.
+
+---
 
 ## 📈 Roadmap
 
