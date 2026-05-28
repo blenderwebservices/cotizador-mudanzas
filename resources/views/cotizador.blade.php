@@ -133,16 +133,23 @@
                 </div>
                 <div>
                     <p class="text-xs font-mono text-gray-400 tracking-widest uppercase">Sistema Mudanzas Hermanos Monroy</p>
-                    <p class="text-base font-semibold text-white" x-text="step < 9 ? 'Cotizador Inteligente' : 'Análisis Completado'"></p>
+                    <p class="text-base font-semibold text-white" x-text="step < 10 ? 'Cotizador Inteligente' : 'Análisis Completado'"></p>
                 </div>
             </div>
-            <!-- Progress -->
-            <div class="flex items-center gap-2" x-show="step < 9 && step > 0">
-                <span class="text-xs font-mono text-brand-neon" x-text="'0' + step"></span>
-                <div class="w-20 h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-brand to-orange-400 transition-all duration-700 rounded-full" :style="'width: ' + ((step/8)*100) + '%'"></div>
+            <!-- Dashboard & Progress -->
+            <div class="flex items-center gap-4">
+                <a href="/admin" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-300 hover:text-white transition-all shadow-sm">
+                    <span class="material-symbols-rounded text-sm">dashboard</span>
+                    Dashboard
+                </a>
+                
+                <div class="flex items-center gap-2" x-show="step < 9 && step > 0">
+                    <span class="text-xs font-mono text-brand-neon" x-text="'0' + step"></span>
+                    <div class="w-20 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-brand to-orange-400 transition-all duration-700 rounded-full" :style="'width: ' + ((step/8)*100) + '%'"></div>
+                    </div>
+                    <span class="text-xs font-mono text-gray-600">08</span>
                 </div>
-                <span class="text-xs font-mono text-gray-600">08</span>
             </div>
         </header>
 
@@ -203,38 +210,116 @@
                 </div>
             </div>
 
-            <!-- STEP 5: Elevator / Access -->
+            <!-- STEP 5: Origen Access / Logistics -->
             <div x-show="step === 5" class="step-enter flex flex-col justify-center min-h-full space-y-6" style="display:none">
                 <div class="space-y-2">
-                    <h2 class="text-3xl font-bold">Análisis estructural</h2>
-                    <p class="text-gray-400 font-light">¿Cómo es el acceso en tu domicilio de <span class="text-brand-neon">Origen</span>?</p>
+                    <span class="inline-block px-3 py-1 rounded-full bg-brand-neon/10 border border-brand-neon/30 text-xs font-mono text-brand-neon mb-1">ORIGEN - PROTOCOLO LOGÍSTICO</span>
+                    <h2 class="text-3xl font-bold">Acceso en Origen</h2>
+                    <p class="text-gray-400 font-light text-sm">Detalles estructurales de tu domicilio actual.</p>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="elevator" value="yes" x-model="data.elevatorStart" class="peer sr-only">
-                        <div class="p-6 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center gap-4">
-                            <span class="material-symbols-rounded text-3xl">elevator</span>
-                            <div>
-                                <h3 class="font-bold">Hay ascensor</h3>
-                                <p class="text-xs text-gray-400">Y mis cosas caben</p>
-                            </div>
+                
+                <div class="space-y-4">
+                    <!-- Elevador -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">¿Cuenta con ascensor?</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="elevatorStart" value="yes" x-model="data.elevatorStart" class="peer sr-only">
+                                <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
+                                    <span class="material-symbols-rounded text-2xl">elevator</span>
+                                    <span class="font-semibold text-sm">Sí, disponible</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="elevatorStart" value="no" x-model="data.elevatorStart" class="peer sr-only">
+                                <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
+                                    <span class="material-symbols-rounded text-2xl">stairs</span>
+                                    <span class="font-semibold text-sm">No / Escaleras</span>
+                                </div>
+                            </label>
                         </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="elevator" value="no" x-model="data.elevatorStart" class="peer sr-only">
-                        <div class="p-6 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center gap-4">
-                            <span class="material-symbols-rounded text-3xl">stairs</span>
-                            <div>
-                                <h3 class="font-bold">Solo escaleras</h3>
-                                <p class="text-xs text-gray-400">O cosas muy grandes</p>
-                            </div>
-                        </div>
-                    </label>
+                    </div>
+
+                    <!-- Pisos -->
+                    <div>
+                        <label for="select-pisos-origen" class="block text-sm font-semibold text-gray-300 mb-2">Número de piso / plantas</label>
+                        <select id="select-pisos-origen" x-model.number="data.pisos_origen" class="w-full p-4 rounded-xl input-cyber text-base font-semibold">
+                            <option value="1">Planta Baja / 1er Piso</option>
+                            <option value="2">2do Piso</option>
+                            <option value="3">3er Piso</option>
+                            <option value="4">4to Piso</option>
+                            <option value="5">5to Piso o más</option>
+                        </select>
+                    </div>
+
+                    <!-- Distancia Caminata -->
+                    <div>
+                        <label for="select-caminata-origen" class="block text-sm font-semibold text-gray-300 mb-2">Distancia de caminata al camión</label>
+                        <select id="select-caminata-origen" x-model.number="data.distancia_caminata_origen_m" class="w-full p-4 rounded-xl input-cyber text-base font-semibold">
+                            <option value="10">Corta (Menos de 10 metros)</option>
+                            <option value="25">Mediana (Entre 10 y 30 metros)</option>
+                            <option value="45">Larga (Más de 30 metros)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- STEP 6: Inventory -->
-            <div x-show="step === 6" class="step-enter flex flex-col space-y-4" style="display:none">
+            <!-- STEP 6: Destino Access / Logistics -->
+            <div x-show="step === 6" class="step-enter flex flex-col justify-center min-h-full space-y-6" style="display:none">
+                <div class="space-y-2">
+                    <span class="inline-block px-3 py-1 rounded-full bg-brand-neon/10 border border-brand-neon/30 text-xs font-mono text-brand-neon mb-1">DESTINO - PROTOCOLO LOGÍSTICO</span>
+                    <h2 class="text-3xl font-bold">Acceso en Destino</h2>
+                    <p class="text-gray-400 font-light text-sm">Detalles estructurales de tu nuevo domicilio.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Elevador -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">¿Cuenta con ascensor?</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="ascensor_destino" :value="true" x-model="data.ascensor_destino" class="peer sr-only">
+                                <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
+                                    <span class="material-symbols-rounded text-2xl">elevator</span>
+                                    <span class="font-semibold text-sm">Sí, disponible</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="ascensor_destino" :value="false" x-model="data.ascensor_destino" class="peer sr-only">
+                                <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
+                                    <span class="material-symbols-rounded text-2xl">stairs</span>
+                                    <span class="font-semibold text-sm">No / Escaleras</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Pisos -->
+                    <div>
+                        <label for="select-pisos-destino" class="block text-sm font-semibold text-gray-300 mb-2">Número de piso / plantas</label>
+                        <select id="select-pisos-destino" x-model.number="data.pisos_destino" class="w-full p-4 rounded-xl input-cyber text-base font-semibold">
+                            <option value="1">Planta Baja / 1er Piso</option>
+                            <option value="2">2do Piso</option>
+                            <option value="3">3er Piso</option>
+                            <option value="4">4to Piso</option>
+                            <option value="5">5to Piso o más</option>
+                        </select>
+                    </div>
+
+                    <!-- Distancia Caminata -->
+                    <div>
+                        <label for="select-caminata-destino" class="block text-sm font-semibold text-gray-300 mb-2">Distancia de caminata al camión</label>
+                        <select id="select-caminata-destino" x-model.number="data.distancia_caminata_destino_m" class="w-full p-4 rounded-xl input-cyber text-base font-semibold">
+                            <option value="10">Corta (Menos de 10 metros)</option>
+                            <option value="25">Mediana (Entre 10 y 30 metros)</option>
+                            <option value="45">Larga (Más de 30 metros)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 7: Inventory -->
+            <div x-show="step === 7" class="step-enter flex flex-col space-y-4" style="display:none">
                 <div>
                     <h2 class="text-2xl font-bold">Selecciona tus artículos</h2>
                     <p class="text-sm text-gray-400">Indica la cantidad de cada ítem que deseas trasladar.</p>
@@ -287,8 +372,8 @@
                 </div>
             </div>
 
-            <!-- STEP 7: Contact Info -->
-            <div x-show="step === 7" class="step-enter flex flex-col justify-center min-h-full space-y-6" style="display:none">
+            <!-- STEP 8: Contact Info -->
+            <div x-show="step === 8" class="step-enter flex flex-col justify-center min-h-full space-y-6" style="display:none">
                 <div class="space-y-2">
                     <h2 class="text-3xl font-bold">Datos de contacto</h2>
                     <p class="text-gray-400 font-light text-sm">¿A dónde enviamos los resultados de tu cotización?</p>
@@ -305,8 +390,8 @@
                 </div>
             </div>
 
-            <!-- STEP 8: Processing / Loading -->
-            <div x-show="step === 8" class="step-enter flex flex-col items-center justify-center min-h-full space-y-8 text-center py-12" style="display:none">
+            <!-- STEP 9: Processing / Loading -->
+            <div x-show="step === 9" class="step-enter flex flex-col items-center justify-center min-h-full space-y-8 text-center py-12" style="display:none">
                 <div class="relative w-36 h-36 flex items-center justify-center">
                     <div class="absolute inset-0 border-4 border-brand-neon/20 border-t-brand-neon rounded-full animate-spin"></div>
                     <div class="absolute inset-3 border-4 border-blue-500/20 border-b-blue-400 rounded-full animate-[spin_1.8s_linear_infinite_reverse]"></div>
@@ -319,8 +404,8 @@
                 </div>
             </div>
 
-            <!-- STEP 9: Results -->
-            <div x-show="step === 9" class="step-enter flex flex-col space-y-5 py-2" style="display:none">
+            <!-- STEP 10: Results -->
+            <div x-show="step === 10" class="step-enter flex flex-col space-y-5 py-2" style="display:none">
                 <!-- Success header -->
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center shadow-[0_0_25px_rgba(34,197,94,0.25)] flex-shrink-0">
@@ -404,7 +489,7 @@
         </main>
 
         <!-- Footer Navigation -->
-        <footer class="p-5 border-t border-white/10 flex justify-between items-center flex-shrink-0" x-show="step < 8 && step > 0">
+        <footer class="p-5 border-t border-white/10 flex justify-between items-center flex-shrink-0" x-show="step < 9 && step > 0">
             <button id="btn-back"
                 @click="prev()"
                 :class="{'opacity-0 pointer-events-none': step === 1}"
@@ -416,9 +501,9 @@
                 @click="next()"
                 :disabled="!canProceed()"
                 class="px-8 py-3 rounded-xl bg-brand hover:bg-brand-neon transition-all shadow-[0_0_20px_rgba(237,52,38,0.35)] font-semibold flex items-center gap-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed">
-                <span x-text="step === 7 ? 'Calcular Cotización' : 'Siguiente'"></span>
-                <span class="material-symbols-rounded text-sm" x-show="step < 7">arrow_forward</span>
-                <span class="material-symbols-rounded text-sm" x-show="step === 7">auto_awesome</span>
+                <span x-text="step === 8 ? 'Calcular Cotización' : 'Siguiente'"></span>
+                <span class="material-symbols-rounded text-sm" x-show="step < 8">arrow_forward</span>
+                <span class="material-symbols-rounded text-sm" x-show="step === 8">auto_awesome</span>
             </button>
         </footer>
 
@@ -436,6 +521,11 @@
                 elevatorStart: null,
                 email: '',
                 phone: '',
+                pisos_origen: 1,
+                distancia_caminata_origen_m: 10,
+                pisos_destino: 1,
+                ascensor_destino: true,
+                distancia_caminata_destino_m: 10,
             },
             inventory: [],
             loadingItems: false,
@@ -473,7 +563,7 @@
                 if (this.step === 1) return this.data.name.trim().length > 0;
                 if (this.step === 3) return this.data.origin.trim().length > 0;
                 if (this.step === 4) return this.data.destination.trim().length > 0;
-                if (this.step === 7) return this.data.email.trim().length > 0 && this.data.email.includes('@');
+                if (this.step === 8) return this.data.email.trim().length > 0 && this.data.email.includes('@');
                 return true;
             },
 
@@ -484,7 +574,7 @@
                     this.data.elevatorStart = 'no'; // default
                 }
 
-                if (this.step === 6) {
+                if (this.step === 7) {
                     // Ensure at least 1 item is selected
                     if (this.getTotalItems() === 0) {
                         alert('Por favor selecciona al menos un artículo para continuar.');
@@ -492,14 +582,14 @@
                     }
                 }
 
-                if (this.step === 7) {
+                if (this.step === 8) {
                     await this.submitQuote();
                     return;
                 }
 
                 this.step++;
 
-                if (this.step === 6) {
+                if (this.step === 7) {
                     await this.loadItems();
                 }
             },
@@ -509,7 +599,7 @@
             },
 
             async submitQuote() {
-                this.step = 8;
+                this.step = 9;
                 this.errorMessage = '';
 
                 const itemsPayload = this.inventory
@@ -532,6 +622,11 @@
                             origin: this.data.origin,
                             destination: this.data.destination,
                             elevatorStart: this.data.elevatorStart,
+                            pisos_origen: this.data.pisos_origen,
+                            distancia_caminata_origen_m: this.data.distancia_caminata_origen_m,
+                            pisos_destino: this.data.pisos_destino,
+                            ascensor_destino: this.data.ascensor_destino,
+                            distancia_caminata_destino_m: this.data.distancia_caminata_destino_m,
                             items: itemsPayload,
                         }),
                     });
@@ -547,23 +642,36 @@
                         };
                         // Small delay for UX drama
                         await new Promise(r => setTimeout(r, 1500));
-                        this.step = 9;
+                        this.step = 10;
                     } else {
                         this.errorMessage = result.message || 'Error al procesar la cotización.';
                         await new Promise(r => setTimeout(r, 1500));
-                        this.step = 9;
+                        this.step = 10;
                     }
                 } catch (e) {
                     console.error('Error submitting quote:', e);
                     this.errorMessage = 'Error de conexión. Por favor intenta de nuevo.';
                     await new Promise(r => setTimeout(r, 1500));
-                    this.step = 9;
+                    this.step = 10;
                 }
             },
 
             resetForm() {
                 this.step = 1;
-                this.data = { name: '', date: '', origin: '', destination: '', elevatorStart: null, email: '', phone: '' };
+                this.data = { 
+                    name: '', 
+                    date: '', 
+                    origin: '', 
+                    destination: '', 
+                    elevatorStart: null, 
+                    email: '', 
+                    phone: '',
+                    pisos_origen: 1,
+                    distancia_caminata_origen_m: 10,
+                    pisos_destino: 1,
+                    ascensor_destino: true,
+                    distancia_caminata_destino_m: 10
+                };
                 this.inventory = [];
                 this.results = {};
                 this.errorMessage = '';
