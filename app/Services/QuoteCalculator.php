@@ -103,21 +103,74 @@ class QuoteCalculator
             $costoCombustible = $fuelNeededL * (float) config('mudanzas.precio_combustible_por_litro');
         }
 
-        // 6. Travel, loading & packing times
-        $tiempoEmpaqueHoras = $tiempoEmpaqueTotalMin / 60;
-        $tiempoCargaHoras = $volumenTotalM3 * (float) config('mudanzas.factor_tiempo_carga_por_m3');
-        $tiempoTrabajoTotalHoras = $tiempoEmpaqueHoras + $tiempoCargaHoras + $tiempoTrasladoHoras;
+        // 6. Extract ABC logisitical drivers
+        $pisosOrigen = (int) ($clientData['pisos_origen'] ?? 1);
+        $caminataOrigen = (int) ($clientData['distancia_caminata_origen_m'] ?? 10);
+        $ascensorOrigen = ($clientData['elevatorStart'] ?? 'no') === 'yes';
 
-        // 7. Costs breakdown
-        $comidaTrabajadoresCosto = $personasSugeridas * (float) config('mudanzas.precio_comida_por_persona');
-        $salariosCosto = $personasSugeridas * $tiempoTrabajoTotalHoras * (float) config('mudanzas.salario_por_hora_por_persona');
+        $pisosDestino = (int) ($clientData['pisos_destino'] ?? 1);
+        $ascensorDestino = ($clientData['ascensor_destino'] ?? 'yes') === 'yes';
+        $caminataDestino = (int) ($clientData['distancia_caminata_destino_m'] ?? 10);
+
+        // 7. Calculate the 5 ABC Activities
+
+        // Actividad A: Comercial y Planificación (Fija)
+        $costoComercial = (float) config('mudanzas.abc.tarifa_comercial_fija', 150.00);
+
+        // Actividad B: Embalaje y Preparación
+        // Costo de materiales de empaque
         $materialEmpaqueCosto = $costoEmpaqueTotal;
+        // Tiempo de desarme por muebles marcados
+        $itemsRequierenDesarme = 0;
+        foreach ($itemsBreakdown as $ib) {
+            if ($ib['requiere_desarmarse']) {
+                $itemsRequierenDesarme += $ib['cantidad'];
+            }
+        }
+        $tiempoDesarmeMin = $itemsRequierenDesarme * (int) config('mudanzas.abc.desarme_tiempo_minutos', 15);
+        $tiempoEmpaqueTotalMinConDesarme = $tiempoEmpaqueTotalMin + $tiempoDesarmeMin;
+        $tiempoEmpaqueHoras = $tiempoEmpaqueTotalMinConDesarme / 60;
+        // Mano de obra de embalaje/desarme
+        $manoObraEmpaque = $personasSugeridas * $tiempoEmpaqueHoras * (float) config('mudanzas.salario_por_hora_por_persona', 150.00);
+        $costoEmbalaje = $materialEmpaqueCosto + $manoObraEmpaque;
+
+        // Actividad C: Carga y Estiba (con recargos por pisos y caminata)
+        $costoCargaBase = $volumenTotalM3 * (float) config('mudanzas.abc.costo_carga_base_m3', 60.00);
+        $recargoEscalerasCarga = 0.0;
+        if (!$ascensorOrigen && $pisosOrigen > 1) {
+            $recargoEscalerasCarga = $volumenTotalM3 * ($pisosOrigen - 1) * (float) config('mudanzas.abc.tarifa_escalera_m3_piso', 25.00);
+        }
+        $recargoCaminataCarga = 0.0;
+        if ($caminataOrigen > 10) {
+            $recargoCaminataCarga = $volumenTotalM3 * ($caminataOrigen - 10) * (float) config('mudanzas.abc.tarifa_caminata_m3_metro', 1.50);
+        }
+        $costoCarga = $costoCargaBase + $recargoEscalerasCarga + $recargoCaminataCarga;
+
+        // Actividad D: Transporte (Conducción)
+        $vehiculoId = $suggestedVehicle ? $suggestedVehicle->id : 1;
+        $costoKmFactor = (float) (config("mudanzas.abc.costo_por_km_vehiculo.{$vehiculoId}") ?? 6.00);
+        $costoDepreciacion = $distanciaKm * $costoKmFactor;
+        // Mano de obra de traslado
+        $tiempoViajeManoObra = $personasSugeridas * $tiempoTrasladoHoras * (float) config('mudanzas.salario_por_hora_por_persona', 150.00);
+        $costoTransporte = $costoCombustible + $costoDepreciacion + $tiempoViajeManoObra;
+
+        // Actividad E: Descarga y Desembalaje (con recargos por pisos y caminata en destino)
+        $costoDescargaBase = $volumenTotalM3 * (float) config('mudanzas.abc.costo_descarga_base_m3', 60.00);
+        $recargoEscalerasDescarga = 0.0;
+        if (!$ascensorDestino && $pisosDestino > 1) {
+            $recargoEscalerasDescarga = $volumenTotalM3 * ($pisosDestino - 1) * (float) config('mudanzas.abc.tarifa_escalera_m3_piso', 25.00);
+        }
+        $recargoCaminataDescarga = 0.0;
+        if ($caminataDestino > 10) {
+            $recargoCaminataDescarga = $volumenTotalM3 * ($caminataDestino - 10) * (float) config('mudanzas.abc.tarifa_caminata_m3_metro', 1.50);
+        }
+        $costoDescarga = $costoDescargaBase + $recargoEscalerasDescarga + $recargoCaminataDescarga;
 
         // 8. Financial totals
-        $gastosTotales = $costoCombustible + $materialEmpaqueCosto + $comidaTrabajadoresCosto + $salariosCosto;
+        $gastosTotales = $costoComercial + $costoEmbalaje + $costoCarga + $costoTransporte + $costoDescarga;
         
-        // Suggested Price based on 50% expenses / 50% profit margin
-        $precioSugerido = $gastosTotales * 2;
+        // Suggested Price based on configurable profit margin
+        $precioSugerido = $gastosTotales * (1.0 + (float) config('mudanzas.ganancia_porcentaje', 0.50));
         
         // Apply minimum tariff
         $tarifaMinima = (float) config('mudanzas.tarifa_minima');
@@ -126,6 +179,11 @@ class QuoteCalculator
         }
 
         $gananciaEstimada = $precioSugerido - $gastosTotales;
+
+        // Tiempos logísticos para desglose tradicional (compatibilidad)
+        $tiempoCargaHoras = $volumenTotalM3 * (float) config('mudanzas.factor_tiempo_carga_por_m3');
+        $comidaTrabajadoresCosto = $personasSugeridas * (float) config('mudanzas.precio_comida_por_persona');
+        $salariosCosto = $manoObraEmpaque + $tiempoViajeManoObra; // salarios directos de embalaje y traslado
 
         return [
             'distancia_km' => $distanciaKm,
@@ -137,7 +195,7 @@ class QuoteCalculator
             'personas_sugeridas' => $personasSugeridas,
             'combustible_l' => $fuelNeededL,
             'costo_combustible' => $costoCombustible,
-            'tiempo_empaque_total_min' => $tiempoEmpaqueTotalMin,
+            'tiempo_empaque_total_min' => $tiempoEmpaqueTotalMinConDesarme,
             'tiempo_carga_horas' => $tiempoCargaHoras,
             'material_empaque_costo' => $materialEmpaqueCosto,
             'comida_trabajadores_costo' => $comidaTrabajadoresCosto,
@@ -146,6 +204,18 @@ class QuoteCalculator
             'ganancia_estimada' => $gananciaEstimada,
             'precio_sugerido' => $precioSugerido,
             'items_breakdown' => $itemsBreakdown,
+
+            // Atributos de costeo ABC
+            'pisos_origen' => $pisosOrigen,
+            'distancia_caminata_origen_m' => $caminataOrigen,
+            'pisos_destino' => $pisosDestino,
+            'ascensor_destino' => $ascensorDestino,
+            'distancia_caminata_destino_m' => $caminataDestino,
+            'costo_actividad_comercial' => $costoComercial,
+            'costo_actividad_embalaje' => $costoEmbalaje,
+            'costo_actividad_carga' => $costoCarga,
+            'costo_actividad_transporte' => $costoTransporte,
+            'costo_actividad_descarga' => $costoDescarga,
         ];
     }
 

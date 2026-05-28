@@ -42,6 +42,14 @@ class QuoteController extends Controller
             'origin' => 'required|string',
             'destination' => 'required|string',
             'elevatorStart' => 'nullable|string',
+            
+            // Drivers logísticos del costeo ABC
+            'pisos_origen' => 'nullable|integer|min:1',
+            'distancia_caminata_origen_m' => 'nullable|integer|min:0',
+            'pisos_destino' => 'nullable|integer|min:1',
+            'ascensor_destino' => 'nullable|string|in:yes,no',
+            'distancia_caminata_destino_m' => 'nullable|integer|min:0',
+
             'items' => 'required|array',
             'items.*.item_id' => 'required|exists:items,id',
             'items.*.count' => 'required|integer|min:0',
@@ -61,6 +69,13 @@ class QuoteController extends Controller
                     'origin' => $validated['origin'],
                     'destination' => $validated['destination'],
                     'elevatorStart' => $validated['elevatorStart'] ?? null,
+                    
+                    // Drivers ABC
+                    'pisos_origen' => $validated['pisos_origen'] ?? 1,
+                    'distancia_caminata_origen_m' => $validated['distancia_caminata_origen_m'] ?? 10,
+                    'pisos_destino' => $validated['pisos_destino'] ?? 1,
+                    'ascensor_destino' => $validated['ascensor_destino'] ?? true,
+                    'distancia_caminata_destino_m' => $validated['distancia_caminata_destino_m'] ?? 10,
                 ],
                 $validated['items']
             );
@@ -76,6 +91,20 @@ class QuoteController extends Controller
                 'origen' => $validated['origin'],
                 'destino' => $validated['destination'],
                 
+                // Drivers logísticos ABC guardados en BD
+                'pisos_origen' => $calcResults['pisos_origen'],
+                'distancia_caminata_origen_m' => $calcResults['distancia_caminata_origen_m'],
+                'pisos_destino' => $calcResults['pisos_destino'],
+                'ascensor_destino' => $calcResults['ascensor_destino'],
+                'distancia_caminata_destino_m' => $calcResults['distancia_caminata_destino_m'],
+                
+                // Desglose de Actividades ABC
+                'costo_actividad_comercial' => $calcResults['costo_actividad_comercial'],
+                'costo_actividad_embalaje' => $calcResults['costo_actividad_embalaje'],
+                'costo_actividad_carga' => $calcResults['costo_actividad_carga'],
+                'costo_actividad_transporte' => $calcResults['costo_actividad_transporte'],
+                'costo_actividad_descarga' => $calcResults['costo_actividad_descarga'],
+
                 'distancia_km' => $calcResults['distancia_km'],
                 'tiempo_traslado_horas' => $calcResults['tiempo_traslado_horas'],
                 'volumen_total_m3' => $calcResults['volumen_total_m3'],

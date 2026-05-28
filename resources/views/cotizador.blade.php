@@ -278,14 +278,14 @@
                         <label class="block text-sm font-semibold text-gray-300 mb-2">¿Cuenta con ascensor?</label>
                         <div class="grid grid-cols-2 gap-4">
                             <label class="cursor-pointer">
-                                <input type="radio" name="ascensor_destino" :value="true" x-model="data.ascensor_destino" class="peer sr-only">
+                                <input type="radio" name="ascensor_destino" value="yes" x-model="data.ascensor_destino" class="peer sr-only">
                                 <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
                                     <span class="material-symbols-rounded text-2xl">elevator</span>
                                     <span class="font-semibold text-sm">Sí, disponible</span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
-                                <input type="radio" name="ascensor_destino" :value="false" x-model="data.ascensor_destino" class="peer sr-only">
+                                <input type="radio" name="ascensor_destino" value="no" x-model="data.ascensor_destino" class="peer sr-only">
                                 <div class="p-4 rounded-xl input-cyber border-2 peer-checked:border-brand-neon peer-checked:bg-brand-neon/10 transition-all flex items-center justify-center gap-3">
                                     <span class="material-symbols-rounded text-2xl">stairs</span>
                                     <span class="font-semibold text-sm">No / Escaleras</span>
@@ -387,6 +387,9 @@
                         <span class="material-symbols-rounded absolute left-4 top-4 text-gray-500">call</span>
                         <input type="tel" id="input-phone" x-model="data.phone" placeholder="Número de teléfono (Opcional)" class="w-full text-lg p-4 pl-12 rounded-xl input-cyber">
                     </div>
+                    
+                    <!-- Error message if any -->
+                    <div x-show="errorMessage" class="bg-red-900/30 border border-red-500/50 rounded-xl p-4 text-sm text-red-300" x-text="errorMessage"></div>
                 </div>
             </div>
 
@@ -524,7 +527,7 @@
                 pisos_origen: 1,
                 distancia_caminata_origen_m: 10,
                 pisos_destino: 1,
-                ascensor_destino: true,
+                ascensor_destino: 'yes',
                 distancia_caminata_destino_m: 10,
             },
             inventory: [],
@@ -583,6 +586,10 @@
                 }
 
                 if (this.step === 8) {
+                    // Check default for ascensor_destino before submitting
+                    if (!this.data.ascensor_destino) {
+                        this.data.ascensor_destino = 'yes';
+                    }
                     await this.submitQuote();
                     return;
                 }
@@ -645,14 +652,13 @@
                         this.step = 10;
                     } else {
                         this.errorMessage = result.message || 'Error al procesar la cotización.';
-                        await new Promise(r => setTimeout(r, 1500));
-                        this.step = 10;
+                        // Stay on Step 8 so they can see the error and fix it
+                        this.step = 8;
                     }
                 } catch (e) {
                     console.error('Error submitting quote:', e);
                     this.errorMessage = 'Error de conexión. Por favor intenta de nuevo.';
-                    await new Promise(r => setTimeout(r, 1500));
-                    this.step = 10;
+                    this.step = 8;
                 }
             },
 
@@ -669,7 +675,7 @@
                     pisos_origen: 1,
                     distancia_caminata_origen_m: 10,
                     pisos_destino: 1,
-                    ascensor_destino: true,
+                    ascensor_destino: 'yes',
                     distancia_caminata_destino_m: 10
                 };
                 this.inventory = [];
