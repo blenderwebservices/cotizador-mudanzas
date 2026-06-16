@@ -150,8 +150,15 @@ class QuoteResource extends Resource
                 ->sortable(),
         ])
         ->defaultSort('created_at', 'desc')
-        ->filters([])
-        ->actions([Tables\Actions\EditAction::make()->label('Ver / Editar')])
+        ->actions([
+            Tables\Actions\EditAction::make()->label('Ver / Editar'),
+            Tables\Actions\Action::make('descargar_excel')
+                ->label('Excel')
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('success')
+                ->url(fn (Quote $record): string => route('quotes.excel.admin', ['quoteId' => $record->id]))
+                ->openUrlInNewTab(),
+        ])
         ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 

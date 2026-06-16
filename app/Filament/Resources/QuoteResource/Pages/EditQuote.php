@@ -13,6 +13,12 @@ class EditQuote extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('descargar_excel')
+                ->label('Descargar Excel (Admin)')
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('success')
+                ->url(fn (): string => route('quotes.excel.admin', ['quoteId' => $this->record->id]))
+                ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];
     }

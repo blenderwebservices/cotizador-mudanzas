@@ -478,7 +478,7 @@
                 </div>
                 <div class="flex space-x-4 mt-4 justify-center">
                     <button id="btn-pdf-client" @click="window.open(`/quotes/${results.quote_id || results.quoteId}/pdf/client`, '_blank')" class="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-neon transition-colors">Descargar PDF (Cliente)</button>
-                    <button id="btn-pdf-admin" @click="window.open(`/quotes/${results.quote_id || results.quoteId}/pdf/admin`, '_blank')" class="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-neon transition-colors">Descargar PDF (Admin)</button>
+                    <button id="btn-excel-admin" @click="window.open(`/quotes/${results.quote_id || results.quoteId}/excel/admin`, '_blank')" class="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-neon transition-colors">Descargar Excel (Admin)</button>
                 </div>
 
                 <!-- Error message if any -->

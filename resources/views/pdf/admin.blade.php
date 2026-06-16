@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>Cotización - Administrador</title>
     <style>
-        body {font-family: 'Outfit', sans-serif; background-color: #020617; color: #f8fafc; padding: 30px;}
-        .container {max-width: 900px; margin: auto; background: rgba(15,23,42,0.7); padding: 20px; border-radius: 12px;}
+        body {font-family: 'Outfit', sans-serif; background-color: #ffffff; color: #1e293b; padding: 30px;}
+        .container {max-width: 900px; margin: auto; background: #ffffff; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;}
         h1, h2 {color: #ed3426;}
-        table {width: 100%; border-collapse: collapse; margin-top: 20px;}
-        th, td {border: 1px solid #444; padding: 8px; text-align: left;}
-        th {background: #1e293b;}
+        table {width: 100%; border-collapse: collapse; margin-top: 20px; color: #1e293b;}
+        th, td {border: 1px solid #cbd5e1; padding: 10px; text-align: left;}
+        th {background: #f1f5f9; color: #0f172a; font-weight: bold;}
         .section {margin-top: 20px;}
-        .footer {margin-top: 30px; font-size: 0.9em; color: #a1a1aa;}
+        .footer {margin-top: 30px; font-size: 0.9em; color: #64748b;}
     </style>
 </head>
 <body>
@@ -44,9 +44,9 @@
                 <tr><th>Actividad C: Carga y Estiba</th><td>${{ number_format($quote->costo_actividad_carga, 2) }}</td></tr>
                 <tr><th>Actividad D: Transporte (Conducción)</th><td>${{ number_format($quote->costo_actividad_transporte, 2) }}</td></tr>
                 <tr><th>Actividad E: Descarga y Desembalaje</th><td>${{ number_format($quote->costo_actividad_descarga, 2) }}</td></tr>
-                <tr style="background: #1e293b; font-weight: bold;"><th>Costo Operativo Total (Gastos)</th><td>${{ number_format($quote->gastos_totales, 2) }}</td></tr>
-                <tr style="font-weight: bold; color: #10b981;"><th>Ganancia Estimada</th><td>${{ number_format($quote->ganancia_estimada, 2) }}</td></tr>
-                <tr style="background: #ed3426; color: #fff; font-weight: bold;"><th>PRECIO SUGERIDO AL CLIENTE</th><td>${{ number_format($quote->precio_sugerido, 2) }}</td></tr>
+                <tr style="background: #f1f5f9; font-weight: bold; color: #0f172a;"><th>Costo Operativo Total (Gastos)</th><td>${{ number_format($quote->gastos_totales, 2) }}</td></tr>
+                <tr style="font-weight: bold; color: #15803d;"><th>Ganancia Estimada</th><td>${{ number_format($quote->ganancia_estimada, 2) }}</td></tr>
+                <tr style="background: #ed3426; color: #ffffff; font-weight: bold;"><th>PRECIO SUGERIDO AL CLIENTE</th><td>${{ number_format($quote->precio_sugerido, 2) }}</td></tr>
             </tbody>
         </table>
     </div>

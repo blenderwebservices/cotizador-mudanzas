@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Cotización - Cliente</title>
     <style>
-        body {font-family: 'Outfit', sans-serif; background-color: #020617; color: #f8fafc; padding: 30px;}
-        .container {max-width: 800px; margin: auto; background: rgba(15,23,42,0.7); padding: 20px; border-radius: 12px;}
+        body {font-family: 'Outfit', sans-serif; background-color: #ffffff; color: #1e293b; padding: 30px;}
+        .container {max-width: 800px; margin: auto; background: #ffffff; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;}
         h1 {color: #ed3426;}
-        table {width: 100%; border-collapse: collapse; margin-top: 20px;}
-        th, td {border: 1px solid #444; padding: 8px; text-align: left;}
-        th {background: #1e293b;}
-        .footer {margin-top: 30px; font-size: 0.9em; color: #a1a1aa;}
+        table {width: 100%; border-collapse: collapse; margin-top: 20px; color: #1e293b;}
+        th, td {border: 1px solid #cbd5e1; padding: 10px; text-align: left;}
+        th {background: #f1f5f9; color: #0f172a; font-weight: bold;}
+        .footer {margin-top: 30px; font-size: 0.9em; color: #64748b;}
     </style>
 </head>
 <body>

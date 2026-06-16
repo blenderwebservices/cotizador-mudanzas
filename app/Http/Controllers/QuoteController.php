@@ -10,6 +10,11 @@ use App\Services\QuoteCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 
 class QuoteController extends Controller
@@ -202,6 +207,184 @@ class QuoteController extends Controller
         ];
         $pdf = Pdf::loadView('pdf.admin', $data);
         return $pdf->stream('cotizacion_admin_' . $quote->id . '.pdf');
+    }
+
+    /**
+     * Generate Excel for admin view
+     */
+    public function adminExcel($quoteId)
+    {
+        $quote = Quote::with(['items.item', 'vehiculoSugerido', 'agent'])->findOrFail($quoteId);
+        
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Detalle Cotización');
+        
+        $sheet->setShowGridlines(true);
+
+        $brandRed = 'ED3426';
+        $borderGray = 'CBD5E1';
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+
+        // Header Title Block
+        $sheet->setCellValue('A1', 'COTIZACIÓN ADMINISTRATIVA - DETALLE');
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14)->getColor()->setRGB($brandRed);
+        
+        $sheet->setCellValue('A2', 'Mudanzas Hermanos Monroy');
+        $sheet->getStyle('A2')->getFont()->setItalic(true)->setSize(11);
+        
+        $folio = 'MDG-' . str_pad($quote->id, 5, '0', STR_PAD_LEFT);
+        $sheet->setCellValue('A3', 'Folio: ' . $folio . ' | Fecha: ' . ($quote->created_at ? $quote->created_at->format('d/m/Y H:i') : now()->format('d/m/Y H:i')));
+        $sheet->getStyle('A3')->getFont()->setSize(9)->getColor()->setRGB('475569');
+
+        // --- SECTION 1: DATOS GENERALES ---
+        $sheet->setCellValue('A5', '1. DATOS DEL CLIENTE Y SERVICIO');
+        $sheet->getStyle('A5')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB($brandRed);
+        
+        $sheet->setCellValue('A6', 'Cliente:');
+        $sheet->setCellValue('B6', $quote->nombre_cliente);
+        $sheet->setCellValue('A7', 'Correo:');
+        $sheet->setCellValue('B7', $quote->email_cliente);
+        $sheet->setCellValue('A8', 'Teléfono:');
+        $sheet->setCellValue('B8', $quote->telefono_cliente ?? 'N/A');
+        
+        $sheet->setCellValue('A9', 'Origen:');
+        $elevatorStartText = ($quote->detalles_json['elevatorStart'] ?? 'no') === 'yes' ? 'Sí' : 'No';
+        $sheet->setCellValue('B9', $quote->origen . " (Piso {$quote->pisos_origen}, Ascensor: {$elevatorStartText}, Caminata: {$quote->distancia_caminata_origen_m}m)");
+        
+        $sheet->setCellValue('A10', 'Destino:');
+        $elevatorDestText = $quote->ascensor_destino ? 'Sí' : 'No';
+        $sheet->setCellValue('B10', $quote->destino . " (Piso {$quote->pisos_destino}, Ascensor: {$elevatorDestText}, Caminata: {$quote->distancia_caminata_destino_m}m)");
+
+        $sheet->getStyle('A6:A10')->getFont()->setBold(true);
+
+        // --- SECTION 2: DRIVERS LOGÍSTICOS ---
+        $sheet->setCellValue('D5', '2. PARÁMETROS LOGÍSTICOS');
+        $sheet->getStyle('D5')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB($brandRed);
+
+        $sheet->setCellValue('D6', 'Distancia Estimada:');
+        $sheet->setCellValue('E6', $quote->distancia_km . ' km');
+        $sheet->setCellValue('D7', 'Tiempo Traslado:');
+        $sheet->setCellValue('E7', $quote->tiempo_traslado_horas . ' hrs');
+        $sheet->setCellValue('D8', 'Volumen Total:');
+        $sheet->setCellValue('E8', $quote->volumen_total_m3 . ' m³');
+        $sheet->setCellValue('D9', 'Personal Sugerido:');
+        $sheet->setCellValue('E9', $quote->personas_sugeridas . ' cargadores');
+        $sheet->setCellValue('D10', 'Vehículo Sugerido:');
+        $sheet->setCellValue('E10', $quote->vehiculoSugerido ? $quote->vehiculoSugerido->nombre : 'N/A');
+        
+        $sheet->getStyle('D6:D10')->getFont()->setBold(true);
+
+        // --- SECTION 3: DESGLOSE DE COSTOS (MODELO ABC) ---
+        $sheet->setCellValue('A13', '3. DESGLOSE DE COSTOS (MODELO ABC)');
+        $sheet->getStyle('A13')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB($brandRed);
+
+        $costos = [
+            ['Actividad A: Comercial y Planificación', $quote->costo_actividad_comercial],
+            ['Actividad B: Embalaje y Preparación', $quote->costo_actividad_embalaje],
+            ['Actividad C: Carga y Estiba', $quote->costo_actividad_carga],
+            ['Actividad D: Transporte (Conducción)', $quote->costo_actividad_transporte],
+            ['Actividad E: Descarga y Desembalaje', $quote->costo_actividad_descarga],
+            ['Costo Operativo Total (Gastos)', $quote->gastos_totales, true, 'F1F5F9'],
+            ['Ganancia Estimada', $quote->ganancia_estimada, true, 'DCFCE7'],
+            ['PRECIO SUGERIDO AL CLIENTE', $quote->precio_sugerido, true, 'FEE2E2', $brandRed],
+        ];
+
+        $row = 14;
+        foreach ($costos as $c) {
+            $sheet->setCellValue('A' . $row, $c[0]);
+            $sheet->setCellValue('B' . $row, $c[1]);
+            
+            $sheet->getStyle('B' . $row)->getNumberFormat()->setFormatCode('$#,##0.00');
+
+            if (isset($c[2]) && $c[2] === true) {
+                $sheet->getStyle('A' . $row . ':B' . $row)->getFont()->setBold(true);
+                if (isset($c[3])) {
+                    $sheet->getStyle('A' . $row . ':B' . $row)->getFill()
+                        ->setFillType(Fill::FILL_SOLID)
+                        ->getStartColor()->setRGB($c[3]);
+                }
+                if (isset($c[4])) {
+                    $sheet->getStyle('A' . $row . ':B' . $row)->getFont()->getColor()->setRGB($c[4]);
+                }
+            }
+            $row++;
+        }
+
+        $costTableRange = 'A14:B' . ($row - 1);
+        $sheet->getStyle($costTableRange)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->getColor()->setRGB($borderGray);
+
+        // --- SECTION 4: INVENTARIO DETALLADO ---
+        $row += 2;
+        $sheet->setCellValue('A' . $row, '4. ITEMS SELECCIONADOS (INVENTARIO)');
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true)->setSize(11)->getColor()->setRGB($brandRed);
+        
+        $row++;
+        $startInventoryRow = $row;
+        
+        $headers = ['Artículo / Item', 'Cantidad', 'Volumen Unitario (m³)', 'Peso Unitario (kg)', 'Costo Empaque Unitario'];
+        $cols = ['A', 'B', 'C', 'D', 'E'];
+        
+        foreach ($headers as $index => $header) {
+            $col = $cols[$index];
+            $sheet->setCellValue($col . $row, $header);
+            $sheet->getStyle($col . $row)->getFont()->setBold(true);
+            $sheet->getStyle($col . $row)->getFill()
+                ->setFillType(Fill::FILL_SOLID)
+                ->getStartColor()->setRGB('E2E8F0');
+        }
+        
+        $row++;
+        
+        $items = $quote->items;
+        foreach ($items as $qi) {
+            $sheet->setCellValue('A' . $row, $qi->item->nombre);
+            $sheet->setCellValue('B' . $row, $qi->cantidad);
+            $sheet->setCellValue('C' . $row, $qi->volumen_m3 ?? $qi->item->tamano_volumetrico ?? 0);
+            $sheet->setCellValue('D' . $row, $qi->peso_kg ?? 0);
+            $sheet->setCellValue('E' . $row, $qi->item->costo_empaque ?? 0);
+
+            $sheet->getStyle('B' . $row)->getNumberFormat()->setFormatCode('#,##0');
+            $sheet->getStyle('C' . $row)->getNumberFormat()->setFormatCode('#,##0.000');
+            $sheet->getStyle('D' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $sheet->getStyle('E' . $row)->getNumberFormat()->setFormatCode('$#,##0.00');
+            
+            $row++;
+        }
+        
+        $sheet->setCellValue('A' . $row, 'TOTALES');
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+        
+        $sheet->setCellValue('B' . $row, "=SUM(B" . ($startInventoryRow + 1) . ":B" . ($row - 1) . ")");
+        $sheet->setCellValue('C' . $row, "=SUM(C" . ($startInventoryRow + 1) . ":C" . ($row - 1) . ")");
+        $sheet->setCellValue('D' . $row, "=SUM(D" . ($startInventoryRow + 1) . ":D" . ($row - 1) . ")");
+        
+        $sheet->getStyle('B' . $row . ':D' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('B' . $row)->getNumberFormat()->setFormatCode('#,##0');
+        $sheet->getStyle('C' . $row)->getNumberFormat()->setFormatCode('#,##0.000');
+        $sheet->getStyle('D' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+        
+        $sheet->getStyle('A' . $row . ':E' . $row)->getFill()
+            ->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()->setRGB('F1F5F9');
+
+        $inventoryTableRange = 'A' . $startInventoryRow . ':E' . $row;
+        $sheet->getStyle($inventoryTableRange)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->getColor()->setRGB($borderGray);
+
+        foreach (range('A', 'E') as $colLetter) {
+            $sheet->getColumnDimension($colLetter)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'cotizacion_admin_' . $quote->id . '_' . date('Ymd_His') . '.xlsx';
+        
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
+        exit;
     }
 }
 
