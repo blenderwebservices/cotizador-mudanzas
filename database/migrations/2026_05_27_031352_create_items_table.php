@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('categoria')->nullable();
+            $table->string('grupo_categoria')->nullable();
             $table->integer('cantidad')->default(1);
             $table->decimal('costo_empaque', 10, 2)->default(0);
             $table->integer('tiempo_empaque')->default(0); // in minutes

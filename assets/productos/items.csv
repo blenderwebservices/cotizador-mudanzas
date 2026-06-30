@@ -1,0 +1,212 @@
+nombre,categoria,grupo_categoria,cantidad,costo_empaque,tiempo_empaque,tamano_volumetrico,nivel_riesgo,requiere_desarmarse,activo,permite_detalles_opcionales,icon
+Basecama + Colchón King,Camas,Camas,1,450.0,30,3.5,bajo,True,True,False,🛏️
+Basecama + Colchón Queen,Camas,Camas,1,400.0,25,3.0,bajo,True,True,False,🛏️
+Basecama + Colchón Matrimonial,Camas,Camas,1,350.0,20,2.5,bajo,True,True,False,🛏️
+Basecama + Colchón Individual,Camas,Camas,1,250.0,20,1.8,bajo,True,True,False,🛌
+Sólo Colchón (King/Queen),Camas,Camas,1,200.0,10,1.5,bajo,False,True,False,🛏️
+Sólo Colchón (Matrimonial/Doble),Camas,Camas,1,150.0,10,1.2,bajo,False,True,False,🛏️
+Sólo Colchón (Individual),Camas,Camas,1,100.0,10,0.8,bajo,False,True,False,🛌
+Cabecera,Camas,Camas,1,150.0,10,0.5,medio,False,True,False,🛏️
+Cuna desarmable,Camas,Camas,1,200.0,20,0.8,bajo,True,True,False,👶
+Cuna no desarmable,Camas,Camas,1,150.0,10,1.2,bajo,False,True,False,👶
+Sólo Base Cama King,Camas,Camas,1,250.0,20,2.0,bajo,True,True,False,🛏️
+Sólo Base Cama Queen,Camas,Camas,1,200.0,20,1.8,bajo,True,True,False,🛏️
+Sólo Base Cama Matrimonial,Camas,Camas,1,180.0,15,1.5,bajo,True,True,False,🛏️
+Sólo Base Cama Individual,Camas,Camas,1,150.0,15,1.0,bajo,True,True,False,🛌
+Escritorio mediano,Mesas,Mesas,1,200.0,15,1.2,medio,True,True,False,🖥️
+Escritorio grande,Mesas,Mesas,1,300.0,25,1.8,medio,True,True,False,🖥️
+Escritorio mediano de vidrio,Mesas,Mesas,1,400.0,25,1.2,alto,True,True,False,🖥️
+Escritorio grande de vidrio,Mesas,Mesas,1,500.0,35,1.8,alto,True,True,False,🖥️
+Mesa de centro,Mesas,Mesas,1,100.0,10,0.4,bajo,False,True,False,☕
+Mesa de centro grande,Mesas,Mesas,1,150.0,10,0.8,medio,False,True,False,☕
+Mesa de centro de vidrio,Mesas,Mesas,1,250.0,15,0.5,alto,False,True,False,☕
+Mesa auxiliar alta,Mesas,Mesas,1,80.0,8,0.3,bajo,False,True,False,🪜
+Mesa auxiliar baja o lateral,Mesas,Mesas,1,60.0,5,0.2,bajo,False,True,False,🪜
+Mesa auxiliar baja o lateral de vidrio,Mesas,Mesas,1,120.0,10,0.2,alto,False,True,False,🪜
+Mesa plegable chica,Mesas,Mesas,1,50.0,5,0.15,bajo,False,True,False,📋
+Mesa plegable grande,Mesas,Mesas,1,80.0,5,0.3,bajo,False,True,False,📋
+Mesa auxiliar de piedra o madera y pesada.,Mesas,Mesas,1,200.0,15,0.6,medio,False,True,False,🪵
+Mesa de Comedor auxiliar,Mesas,Mesas,1,150.0,15,1.0,bajo,True,True,False,🍽️
+Mesa de Comedor 4 personas,Mesas,Mesas,1,250.0,20,1.5,medio,True,True,False,🍽️
+Mesa de Comedor 6 personas,Mesas,Mesas,1,300.0,25,2.2,medio,True,True,False,🍽️
+Mesa de Comedor 8 personas,Mesas,Mesas,1,350.0,30,3.0,medio,True,True,False,🍽️
+Mesa de Comedor 10 personas,Mesas,Mesas,1,400.0,35,3.8,medio,True,True,False,🍽️
+"Mesa de Comedor de vidrio, 4 personas",Mesas,Mesas,1,450.0,30,1.5,alto,True,True,False,🍽️
+"Mesa de Comedor de vidrio, 6 personas",Mesas,Mesas,1,550.0,35,2.2,alto,True,True,False,🍽️
+"Mesa de Comedor de vidrio, 8 personas",Mesas,Mesas,1,650.0,40,3.0,alto,True,True,False,🍽️
+"Mesa de Comedor de vidrio, 10 personas",Mesas,Mesas,1,750.0,45,3.8,alto,True,True,False,🍽️
+Mesa de Comedor con cubierta de piedra para hasta 8 personas,Mesas,Mesas,1,500.0,40,3.0,alto,True,True,False,🍽️
+Mesa de Comedor con cubierta de piedra para hasta 12 personas,Mesas,Mesas,1,700.0,50,4.5,alto,True,True,False,🍽️
+Buró / Mesa de Noche,"Muebles, almacenaje y otros",Mesas,1,100.0,10,0.25,bajo,False,True,False,🗄️
+Carrito de servicio,"Muebles, almacenaje y otros",Muebles de Hogar,1,80.0,10,0.35,bajo,False,True,False,🛒
+Cómoda chica,"Muebles, almacenaje y otros",Muebles de Hogar,1,180.0,15,0.6,bajo,False,True,False,🗄️
+Cómoda grande,"Muebles, almacenaje y otros",Muebles de Hogar,1,250.0,20,1.2,bajo,False,True,False,🗄️
+Estantería,"Muebles, almacenaje y otros",Muebles de Hogar,1,150.0,15,0.8,bajo,True,True,False,🪜
+Estantería tipo escalera,"Muebles, almacenaje y otros",Muebles de Hogar,1,120.0,15,0.6,bajo,True,True,False,🪜
+Librero,"Muebles, almacenaje y otros",Muebles de Hogar,1,200.0,20,1.0,bajo,True,True,False,📚
+Mueble de TV pequeño,"Muebles, almacenaje y otros",Muebles de Hogar,1,150.0,15,0.5,bajo,False,True,False,📺
+Mueble de TV mediano,"Muebles, almacenaje y otros",Muebles de Hogar,1,200.0,15,0.9,bajo,False,True,False,📺
+Mueble de TV grande,"Muebles, almacenaje y otros",Muebles de Hogar,1,280.0,20,1.4,bajo,False,True,False,📺
+Mueble tipo bar,"Muebles, almacenaje y otros",Muebles de Hogar,1,250.0,20,1.0,medio,False,True,False,🍷
+Ropero,"Muebles, almacenaje y otros",Muebles de Hogar,1,350.0,30,2.0,medio,True,True,False,🚪
+Tocador con espejo,"Muebles, almacenaje y otros",Muebles de Hogar,1,300.0,25,1.2,alto,False,True,False,🪞
+Vitrina o Credenza o Alacena,"Muebles, almacenaje y otros",Muebles de Hogar,1,350.0,25,1.2,alto,False,True,False,🏺
+Vitrina o Credenza o Alacena Grandes,"Muebles, almacenaje y otros",Muebles de Hogar,1,500.0,35,2.2,alto,False,True,False,🏺
+Trinchador,"Muebles, almacenaje y otros",Muebles de Hogar,1,250.0,20,1.2,medio,False,True,False,🗄️
+Trinchador grande,"Muebles, almacenaje y otros",Muebles de Hogar,1,350.0,25,2.0,medio,False,True,False,🗄️
+Zapatera,"Muebles, almacenaje y otros",Muebles de Hogar,1,100.0,10,0.4,bajo,False,True,False,👞
+Silla de comedor,Sillas,Sillas,1,50.0,5,0.2,bajo,False,True,False,🪑
+Silla de comedor auxiliar,Sillas,Sillas,1,50.0,5,0.2,bajo,False,True,False,🪑
+Silla de escritorio,Sillas,Sillas,1,80.0,8,0.35,bajo,False,True,False,🪑
+Silla plegable,Sillas,Sillas,1,30.0,3,0.08,bajo,False,True,False,🪑
+Silla reclinable,Sillas,Sillas,1,150.0,10,0.6,medio,False,True,False,🪑
+Silla mecedora,Sillas,Sillas,1,120.0,10,0.5,medio,False,True,False,🪑
+Banco bajo,Sillas,Sillas,1,30.0,3,0.1,bajo,False,True,False,🪑
+Banco alto,Sillas,Sillas,1,40.0,4,0.15,bajo,False,True,False,🪑
+Taburete,Sillas,Sillas,1,40.0,4,0.15,bajo,False,True,False,🪑
+Banca,Sillas,Sillas,1,120.0,10,0.6,bajo,False,True,False,🪑
+Sillón 1 plaza,Sofás,Sofás,1,150.0,10,0.8,medio,False,True,False,🛋️
+Sofá 2 plazas,Sofás,Sofás,1,250.0,15,1.6,medio,False,True,False,🛋️
+Sofá 3 plazas,Sofás,Sofás,1,300.0,20,2.2,medio,False,True,False,🛋️
+Sofá 4 plazas,Sofás,Sofás,1,350.0,25,2.8,medio,False,True,False,🛋️
+Sala en L 3 plazas,Sofás,Sofás,1,350.0,25,2.5,medio,True,True,False,🛋️
+Sala en L 4 plazas,Sofás,Sofás,1,400.0,30,3.2,medio,True,True,False,🛋️
+Sala en L 5 plazas,Sofás,Sofás,1,450.0,35,3.8,medio,True,True,False,🛋️
+Sala en L 6 plazas,Sofás,Sofás,1,500.0,40,4.5,medio,True,True,False,🛋️
+Futón o sofá cama de 1 plaza,Sofás,Camas,1,180.0,15,0.9,medio,False,True,False,🛋️
+Futón o sofá cama de 2 plazas,Sofás,Camas,1,250.0,20,1.5,medio,False,True,False,🛋️
+Puf,Sofás,Sofás,1,50.0,5,0.3,bajo,False,True,False,🛋️
+Refrigerador,Cocina,Electrodomésticos y Línea Blanca,1,250.0,10,1.5,medio,False,True,True,🧊
+Refrigerador duplex,Cocina,Electrodomésticos y Línea Blanca,1,350.0,15,2.5,medio,False,True,True,🧊
+Congelador,Cocina,Electrodomésticos y Línea Blanca,1,200.0,10,1.6,medio,False,True,False,🧊
+Refrigerador pequeño (minibar),Cocina,Electrodomésticos y Línea Blanca,1,120.0,10,0.4,bajo,False,True,False,🧊
+Cava de vinos,Cocina,Electrodomésticos y Línea Blanca,1,200.0,15,0.8,medio,False,True,False,🍷
+Estufa con horno,Cocina,Electrodomésticos y Línea Blanca,1,200.0,15,0.9,medio,False,True,False,🍳
+Horno eléctrico,Cocina,Electrodomésticos y Línea Blanca,1,80.0,10,0.2,bajo,False,True,False,🍳
+Microondas,Cocina,Electrodomésticos y Línea Blanca,1,80.0,10,0.15,bajo,False,True,False,🍳
+Lavadora,Cocina,Electrodomésticos y Línea Blanca,1,150.0,10,1.0,medio,False,True,False,🧺
+Secadora,Cocina,Electrodomésticos y Línea Blanca,1,150.0,10,1.0,medio,False,True,False,🧺
+Lavavajilla,Cocina,Electrodomésticos y Línea Blanca,1,150.0,10,0.9,medio,False,True,False,🍳
+Centro de lavado,Cocina,Electrodomésticos y Línea Blanca,1,250.0,20,1.8,medio,False,True,False,🧺
+Electrodomésticos de cocina,Cocina,Electrodomésticos y Línea Blanca,1,50.0,5,0.1,bajo,False,True,False,🍳
+Módulo Superior de Cocina Integral,Cocina,Muebles de Cocina,1,200.0,20,0.8,medio,True,True,False,🚪
+Módulo Inferior de Cocina Integral,Cocina,Muebles de Cocina,1,250.0,25,1.2,medio,True,True,False,🚪
+Bote Basura Grande,Cocina,Accesorios del Hogar,1,30.0,3,0.3,bajo,False,True,False,🗑️
+Bote Basura Pequeño,Cocina,Accesorios del Hogar,1,20.0,2,0.1,bajo,False,True,False,🗑️
+TV pequeña / monitor,Electrónica,TVs,1,150.0,15,0.2,alto,False,True,True,📺
+TV mediana,Electrónica,TVs,1,250.0,15,0.5,alto,False,True,True,📺
+TV grande,Electrónica,TVs,1,350.0,20,0.8,alto,False,True,True,📺
+TV gigante,Electrónica,TVs,1,450.0,25,1.2,alto,False,True,True,📺
+Computadora de escritorio,Electrónica,Muebles de Oficina,1,200.0,15,0.4,alto,False,True,True,💻
+Impresora pequeña,Electrónica,Electrodomésticos y Línea Blanca,1,80.0,10,0.15,medio,False,True,False,🖨️
+Impresora mediana,Electrónica,Electrodomésticos y Línea Blanca,1,120.0,10,0.3,medio,False,True,False,🖨️
+Estereo / Equipo de música,Electrónica,Electrodomésticos y Línea Blanca,1,150.0,15,0.4,alto,False,True,False,🔊
+Aspiradora,Electrónica,Electrodomésticos y Línea Blanca,1,50.0,5,0.2,bajo,False,True,False,🧹
+Ventilador,Electrónica,Electrodomésticos y Línea Blanca,1,60.0,5,0.25,bajo,False,True,False,💨
+Lámparas de mesa noche,Lámparas,Iluminación,1,50.0,5,0.08,medio,False,True,False,💡
+Lámparas de pie,Lámparas,Iluminación,1,80.0,8,0.2,medio,False,True,False,💡
+Lámpara colgante,Lámparas,Iluminación,1,80.0,10,0.15,medio,False,True,False,💡
+Lámpara colgante de vidrio,Lámparas,Iluminación,1,150.0,15,0.15,alto,False,True,False,💡
+Alfombra pequeña,Misceláneos,Decoración y Accesorios,1,40.0,5,0.1,bajo,False,True,False,🧹
+Alfombra grande,Misceláneos,Decoración y Accesorios,1,80.0,8,0.4,bajo,False,True,False,🧹
+Baúl,Misceláneos,Misceláneos,1,100.0,10,0.6,bajo,False,True,False,📦
+Biombo,Misceláneos,Decoración y Accesorios,1,100.0,10,0.3,bajo,False,True,False,🚪
+Bicicleta,Misceláneos,Deportes y Fitness,1,100.0,10,0.8,medio,False,True,False,🚲
+Bolsa de palos de golf,Misceláneos,Cajas y Embalaje,1,80.0,8,0.3,medio,False,True,False,🏌️
+Canasta,Misceláneos,Misceláneos,1,30.0,3,0.15,bajo,False,True,False,🧺
+Cuadros chicos,Misceláneos,Decoración y Accesorios,1,30.0,5,0.02,alto,False,True,False,🖼️
+Cuadros medianos,Misceláneos,Decoración y Accesorios,1,50.0,8,0.08,alto,False,True,False,🖼️
+Cuadros grandes,Misceláneos,Decoración y Accesorios,1,100.0,12,0.2,alto,False,True,False,🖼️
+Calentador / Radiador de gas,Misceláneos,Misceláneos,1,120.0,10,0.4,medio,False,True,False,🔥
+Calentador / Radiador pequeño,Misceláneos,Misceláneos,1,80.0,8,0.15,medio,False,True,False,🔥
+Calentador / Radiador grande,Misceláneos,Misceláneos,1,150.0,12,0.5,medio,False,True,False,🔥
+"Caminadora, elíptica u otra máquina",Misceláneos,Deportes y Fitness,1,250.0,20,1.8,medio,True,True,False,🏃
+Espejos,Misceláneos,Decoración y Accesorios,1,150.0,15,0.25,alto,False,True,False,🪞
+Máquina de coser,Misceláneos,Misceláneos,1,100.0,10,0.2,medio,False,True,False,🧵
+Mármol,Misceláneos,Misceláneos,1,200.0,20,0.4,alto,False,True,True,🪨
+Mesa de billar / pool,Misceláneos,Mesas,1,800.0,60,3.5,alto,True,True,False,🎱
+Mesa de ping pong,Misceláneos,Mesas,1,300.0,20,1.5,medio,True,True,False,🏓
+Mesa de futbolito,Misceláneos,Mesas,1,200.0,15,0.8,medio,False,True,False,⚽
+Mini split + condensador,Misceláneos,Misceláneos,1,250.0,20,0.6,medio,False,True,False,❄️
+Rascador de gatos,Misceláneos,Mascotas,1,50.0,5,0.3,bajo,False,True,False,🐱
+Pecera,Misceláneos,Mascotas,1,300.0,30,0.5,alto,False,True,False,🐠
+Piano vertical (sin cola),Misceláneos,Instrumentos Musicales,1,800.0,45,2.2,alto,False,True,False,🎹
+Teclado electrico / midi,Misceláneos,Instrumentos Musicales,1,120.0,10,0.25,alto,False,True,False,🎹
+Bateria,Misceláneos,Instrumentos Musicales,1,350.0,35,1.8,medio,True,True,False,🥁
+Guitarra / bajo,Misceláneos,Instrumentos Musicales,1,100.0,10,0.2,alto,False,True,False,🎸
+Juguetes Castillo / Cocina / Resbaladilla,Misceláneos,Juguetes e Infantil,1,200.0,20,1.5,bajo,True,True,False,🏰
+Perchero,Misceláneos,Decoración y Accesorios,1,60.0,5,0.25,bajo,False,True,False,🧥
+Motocicleta de hasta 600 cm3. (vehiculo automotor),Misceláneos,Vehículos,1,200.0,15,2.5,medio,False,True,False,🏍️
+Coche SUV grande (vehículo automotor),Misceláneos,Vehículos,1,0.0,0,14.0,bajo,False,True,False,🚗
+Coche Sedan / SUV (vehículo automotor),Misceláneos,Vehículos,1,0.0,0,10.0,bajo,False,True,False,🚗
+Tina portátil para bebés,Misceláneos,Juguetes e Infantil,1,30.0,5,0.15,bajo,False,True,False,👶
+Escalera,Misceláneos,Misceláneos,1,50.0,5,0.3,bajo,False,True,False,🪜
+Rollo de tela,Misceláneos,Decoración y Accesorios,1,40.0,5,0.2,bajo,False,True,False,🧵
+Asador,Terraza,Muebles de Jardín,1,150.0,10,0.8,bajo,False,True,False,🍖
+Banca terraza,Terraza,Muebles de Jardín,1,100.0,10,0.6,bajo,False,True,False,🪵
+Camastro,Terraza,Camas,1,120.0,10,0.8,bajo,False,True,False,⛱️
+Casa de perro pequeña,Terraza,Muebles de Jardín,1,100.0,10,0.4,bajo,False,True,False,🐕
+Casa de perro grande,Terraza,Muebles de Jardín,1,200.0,15,1.2,bajo,False,True,False,🐕
+Escultura pesada,Terraza,Muebles de Jardín,1,300.0,20,0.8,alto,False,True,False,🗿
+Maceta pequeña,Terraza,Muebles de Jardín,1,40.0,5,0.05,medio,False,True,False,🪴
+Maceta mediana,Terraza,Muebles de Jardín,1,80.0,8,0.15,medio,False,True,False,🪴
+Maceta grande / Jardinera,Terraza,Muebles de Jardín,1,180.0,15,0.6,medio,False,True,False,🪴
+Mesa de centro terraza,Terraza,Muebles de Jardín,1,100.0,10,0.4,bajo,False,True,False,☕
+Sofá 1 cuerpo terraza,Terraza,Muebles de Jardín,1,120.0,10,0.6,bajo,False,True,False,🛋️
+Sillón 2 cuerpos terraza,Terraza,Muebles de Jardín,1,180.0,15,1.2,bajo,False,True,False,🛋️
+Sillón 3 cuerpos terraza,Terraza,Muebles de Jardín,1,240.0,20,1.8,bajo,False,True,False,🛋️
+Silla Acapulco,Terraza,Muebles de Jardín,1,60.0,5,0.4,bajo,False,True,False,🪑
+Sombrilla y base,Terraza,Muebles de Jardín,1,100.0,10,0.4,bajo,True,True,False,⛱️
+"Estación trabajo desarmable, 1 puesto",Oficinas Corporativas,Muebles de Oficina,1,300.0,30,1.5,medio,True,True,False,🖥️
+"Estación trabajo desarmable, 2 puestos",Oficinas Corporativas,Muebles de Oficina,1,500.0,50,2.8,medio,True,True,False,🖥️
+"Estación trabajo desarmable, 3 puestos",Oficinas Corporativas,Muebles de Oficina,1,700.0,70,4.0,medio,True,True,False,🖥️
+"Estación trabajo desarmable, 4 puestos",Oficinas Corporativas,Muebles de Oficina,1,900.0,90,5.2,medio,True,True,False,🖥️
+"Estación trabajo no desarmable, 1 puesto",Oficinas Corporativas,Muebles de Oficina,1,200.0,15,2.0,medio,False,True,False,🖥️
+"Estación trabajo no desarmable, 2 puestos",Oficinas Corporativas,Muebles de Oficina,1,350.0,25,3.8,medio,False,True,False,🖥️
+"Estación trabajo no desarmable, 3 puestos",Oficinas Corporativas,Muebles de Oficina,1,500.0,35,5.5,medio,False,True,False,🖥️
+"Estación trabajo no desarmable, 4 puestos",Oficinas Corporativas,Muebles de Oficina,1,650.0,45,7.2,medio,False,True,False,🖥️
+Escritorio mediano desarmable,Oficinas Corporativas,Muebles de Oficina,1,200.0,20,1.2,bajo,True,True,False,🖥️
+Escritorio grande desarmable,Oficinas Corporativas,Muebles de Oficina,1,280.0,25,1.8,bajo,True,True,False,🖥️
+Escritorio mediano no desarmable,Oficinas Corporativas,Muebles de Oficina,1,150.0,10,1.5,bajo,False,True,False,🖥️
+Escritorio grande no desarmable,Oficinas Corporativas,Muebles de Oficina,1,200.0,12,2.2,bajo,False,True,False,🖥️
+"Mesa de reunión, 4 personas",Oficinas Corporativas,Muebles de Oficina,1,250.0,20,1.8,medio,True,True,False,🤝
+"Mesa de reunión, 6 personas",Oficinas Corporativas,Muebles de Oficina,1,300.0,25,2.5,medio,True,True,False,🤝
+"Mesa de reunión, 8 personas",Oficinas Corporativas,Muebles de Oficina,1,350.0,30,3.2,medio,True,True,False,🤝
+"Mesa de reunión, 10 personas",Oficinas Corporativas,Muebles de Oficina,1,400.0,35,4.0,medio,True,True,False,🤝
+"Mesa de reunión, 12 personas",Oficinas Corporativas,Muebles de Oficina,1,500.0,40,5.0,medio,True,True,False,🤝
+Archivador pequeño,Oficinas Corporativas,Muebles de Oficina,1,80.0,10,0.3,bajo,False,True,False,🗄️
+Archivador mediano,Oficinas Corporativas,Muebles de Oficina,1,120.0,15,0.6,bajo,False,True,False,🗄️
+Archivador grande,Oficinas Corporativas,Muebles de Oficina,1,180.0,20,1.2,bajo,False,True,False,🗄️
+"Monitor 15-20""",Oficinas Corporativas,TVs,1,100.0,10,0.1,alto,False,True,True,🖥️
+"Monitor 20-25""",Oficinas Corporativas,TVs,1,120.0,10,0.15,alto,False,True,True,🖥️
+"Monitor 25-30""",Oficinas Corporativas,TVs,1,150.0,10,0.2,alto,False,True,True,🖥️
+Combo PC sin monitor,Oficinas Corporativas,TVs,1,150.0,15,0.15,alto,False,True,True,💻
+Impresora mediana,Oficinas Corporativas,Muebles de Oficina,1,120.0,10,0.3,medio,False,True,False,🖨️
+Impresora pequeña,Oficinas Corporativas,Muebles de Oficina,1,80.0,10,0.15,medio,False,True,False,🖨️
+Fotocopiadora grande,Oficinas Corporativas,Muebles de Oficina,1,300.0,25,1.2,alto,False,True,False,🖨️
+Servicio de Renta de Closet Portatil (para traslado de ropa),Cajas y Maletas,Cajas y Embalaje,1,150.0,15,0.8,bajo,True,True,False,👗
+Contenedores plásticos (100 L),Cajas y Maletas,Cajas y Embalaje,1,30.0,3,0.15,bajo,False,True,False,📦
+Contenedores plásticos (50 L),Cajas y Maletas,Cajas y Embalaje,1,20.0,2,0.08,bajo,False,True,False,📦
+Maleta pequeña,Cajas y Maletas,Cajas y Embalaje,1,20.0,2,0.1,bajo,False,True,False,🧳
+Maleta grande,Cajas y Maletas,Cajas y Embalaje,1,30.0,3,0.2,bajo,False,True,False,🧳
+Bolsa o bulto grande,Cajas y Maletas,Cajas y Embalaje,1,30.0,3,0.25,bajo,False,True,False,🛍️
+Bolsa o bulto mediano,Cajas y Maletas,Cajas y Embalaje,1,20.0,2,0.15,bajo,False,True,False,🛍️
+Caja fuerte vertical,Cajas y Maletas,Cajas y Embalaje,1,200.0,15,0.4,medio,False,True,False,🔒
+Caja fuerte de closet,Cajas y Maletas,Cajas y Embalaje,1,150.0,10,0.15,medio,False,True,False,🔒
+Caja fuerte Pequeña,Cajas y Maletas,Cajas y Embalaje,1,100.0,8,0.08,medio,False,True,False,🔒
+Pallet y mercancía grande,Cajas y Maletas,Cajas y Embalaje,1,300.0,20,2.0,medio,False,True,True,📦
+Pallet y mercancia chico,Cajas y Maletas,Cajas y Embalaje,1,150.0,15,0.8,medio,False,True,True,📦
+Pallet y mercancia mediano,Cajas y Maletas,Cajas y Embalaje,1,220.0,18,1.4,medio,False,True,True,📦
+Cajas de cocina,Cajas,Cajas y Embalaje,1,50.0,5,0.1,bajo,False,True,False,📦
+Cajas de adornos,Cajas,Cajas y Embalaje,1,50.0,5,0.1,bajo,False,True,False,📦
+Cajas de ropa,Cajas,Cajas y Embalaje,1,50.0,5,0.1,bajo,False,True,False,📦
+Estufa Industrial,Restaurantes,Equipamiento de Restaurante,1,350.0,25,1.8,medio,False,True,False,🍳
+Freidora Industrial,Restaurantes,Equipamiento de Restaurante,1,250.0,20,1.2,medio,False,True,False,🍳
+Horno Industrial,Restaurantes,Equipamiento de Restaurante,1,400.0,30,2.0,medio,False,True,False,🍳
+Mesa Fria Industrial,Restaurantes,Equipamiento de Restaurante,1,450.0,25,2.5,medio,False,True,False,🧊
+Mesa de Trabajo Industrial,Restaurantes,Equipamiento de Restaurante,1,250.0,15,1.8,bajo,False,True,False,⚙️
+Plancha Industrial,Restaurantes,Equipamiento de Restaurante,1,200.0,15,1.0,medio,False,True,False,🍳
+Refrigerador / Congelador Horizontal Industrial,Restaurantes,Equipamiento de Restaurante,1,400.0,25,2.2,medio,False,True,False,🧊
+Refrigerador Industrial Duplex,Restaurantes,Equipamiento de Restaurante,1,500.0,30,3.5,medio,False,True,False,🧊
+Refrigerador Industrial,Restaurantes,Equipamiento de Restaurante,1,400.0,20,2.2,medio,False,True,False,🧊
+Tarja industrial,Restaurantes,Equipamiento de Restaurante,1,200.0,15,1.5,medio,False,True,False,🚰
