@@ -77,112 +77,12 @@ class DatabaseSeeder extends Seeder
             Vehicle::updateOrCreate(['nombre' => $vehicle['nombre']], $vehicle);
         }
 
-        // 4. Seed Inventory Items
-        $items = [
-            [
-                'nombre' => 'Cama King',
-                'cantidad' => 1,
-                'costo_empaque' => 450.00,
-                'tiempo_empaque' => 30, // 30 minutes
-                'tamano_volumetrico' => 3.000, // 3 m³
-                'nivel_riesgo' => 'bajo',
-                'requiere_desarmarse' => true,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '🛏️',
-            ],
-            [
-                'nombre' => 'Cama 1 Plaza',
-                'cantidad' => 1,
-                'costo_empaque' => 250.00,
-                'tiempo_empaque' => 20, // 20 minutes
-                'tamano_volumetrico' => 1.500, // 1.5 m³
-                'nivel_riesgo' => 'bajo',
-                'requiere_desarmarse' => true,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '卧',
-            ],
-            [
-                'nombre' => 'Sofá 3 Cuerpos',
-                'cantidad' => 1,
-                'costo_empaque' => 350.00,
-                'tiempo_empaque' => 15,
-                'tamano_volumetrico' => 2.500,
-                'nivel_riesgo' => 'medio',
-                'requiere_desarmarse' => false,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '🛋️',
-            ],
-            [
-                'nombre' => 'Televisor',
-                'cantidad' => 1,
-                'costo_empaque' => 300.00,
-                'tiempo_empaque' => 15,
-                'tamano_volumetrico' => 0.800,
-                'nivel_riesgo' => 'alto',
-                'requiere_desarmarse' => false,
-                'activo' => true,
-                'permite_detalles_opcionales' => true, // custom size & weight allowed
-                'icon' => '📺',
-            ],
-            [
-                'nombre' => 'Refrigerador',
-                'cantidad' => 1,
-                'costo_empaque' => 250.00,
-                'tiempo_empaque' => 10,
-                'tamano_volumetrico' => 2.200,
-                'nivel_riesgo' => 'medio',
-                'requiere_desarmarse' => false,
-                'activo' => true,
-                'permite_detalles_opcionales' => true, // custom size & weight allowed
-                'icon' => '🧊',
-            ],
-            [
-                'nombre' => 'Lavadora',
-                'cantidad' => 1,
-                'costo_empaque' => 150.00,
-                'tiempo_empaque' => 10,
-                'tamano_volumetrico' => 1.200,
-                'nivel_riesgo' => 'medio',
-                'requiere_desarmarse' => false,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '🧺',
-            ],
-            [
-                'nombre' => 'Mesa Comedor',
-                'cantidad' => 1,
-                'costo_empaque' => 200.00,
-                'tiempo_empaque' => 25,
-                'tamano_volumetrico' => 2.000,
-                'nivel_riesgo' => 'bajo',
-                'requiere_desarmarse' => true,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '🪑',
-            ],
-            [
-                'nombre' => 'Cajas (x5)',
-                'cantidad' => 1,
-                'costo_empaque' => 250.00,
-                'tiempo_empaque' => 15,
-                'tamano_volumetrico' => 0.500,
-                'nivel_riesgo' => 'bajo',
-                'requiere_desarmarse' => false,
-                'activo' => true,
-                'permite_detalles_opcionales' => false,
-                'icon' => '📦',
-            ],
-        ];
-
-        // Fix Cama 1 Plaza icon which got a chinese character from prompt backup or was🛌
-        // Let's use 🛌 for Cama 1 Plaza
-        foreach ($items as &$it) {
-            if ($it['nombre'] === 'Cama 1 Plaza') {
-                $it['icon'] = '🛌';
-            }
+        // 4. Seed Inventory Items from JSON file
+        $jsonPath = base_path('assets/productos/items.json');
+        if (file_exists($jsonPath)) {
+            $items = json_decode(file_get_contents($jsonPath), true);
+        } else {
+            $items = [];
         }
 
         foreach ($items as $item) {
