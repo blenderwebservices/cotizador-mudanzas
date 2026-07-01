@@ -25,7 +25,8 @@ class ItemResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('nombre')
                         ->label('Nombre del artículo')
-                        ->required(),
+                        ->required()
+                        ->columnSpan(2),
                     Forms\Components\TextInput::make('icon')
                         ->label('Ícono (emoji)')
                         ->placeholder('🛏️')
@@ -41,7 +42,65 @@ class ItemResource extends Resource
                         ->options(['bajo' => '🟢 Bajo', 'medio' => '🟡 Medio', 'alto' => '🔴 Alto'])
                         ->required()
                         ->default('bajo'),
-                ])->columns(3),
+                    Forms\Components\Select::make('grupo_categoria')
+                        ->label('Grupo')
+                        ->relationship('groupCategory', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nombre del Grupo')
+                                ->required()
+                                ->unique(table: 'group_categories', column: 'name'),
+                        ])
+                        ->editOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nombre del Grupo')
+                                ->required(),
+                        ])
+                        ->suffixActions([
+                            Forms\Components\Actions\Action::make('delete')
+                                ->icon('heroicon-m-trash')
+                                ->color('danger')
+                                ->requiresConfirmation()
+                                ->action(function (Forms\Components\Select $component, $state) {
+                                    if ($state) {
+                                        \App\Models\GroupCategory::where('name', $state)->delete();
+                                        \App\Models\Item::where('grupo_categoria', $state)->update(['grupo_categoria' => null]);
+                                        $component->state(null);
+                                    }
+                                })
+                        ]),
+                    Forms\Components\Select::make('categoria')
+                        ->label('Categoría')
+                        ->relationship('category', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nombre de la Categoría')
+                                ->required()
+                                ->unique(table: 'categories', column: 'name'),
+                        ])
+                        ->editOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nombre de la Categoría')
+                                ->required(),
+                        ])
+                        ->suffixActions([
+                            Forms\Components\Actions\Action::make('delete')
+                                ->icon('heroicon-m-trash')
+                                ->color('danger')
+                                ->requiresConfirmation()
+                                ->action(function (Forms\Components\Select $component, $state) {
+                                    if ($state) {
+                                        \App\Models\Category::where('name', $state)->delete();
+                                        \App\Models\Item::where('categoria', $state)->update(['categoria' => null]);
+                                        $component->state(null);
+                                    }
+                                })
+                        ]),
+                ])->columns(2),
 
             Forms\Components\Section::make('Propiedades Físicas y Costos')
                 ->schema([
@@ -82,6 +141,14 @@ class ItemResource extends Resource
                 ->label('Artículo')
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('grupo_categoria')
+                ->label('Grupo')
+                ->sortable()
+                ->searchable(),
+            Tables\Columns\TextColumn::make('categoria')
+                ->label('Categoría')
+                ->sortable()
+                ->searchable(),
             Tables\Columns\TextColumn::make('tamano_volumetrico')
                 ->label('Volumen (m³)')
                 ->numeric()
@@ -114,6 +181,12 @@ class ItemResource extends Resource
         ])
         ->reorderable('orden')
         ->defaultSort('orden')
+        ->groups([
+            Tables\Grouping\Group::make('grupo_categoria')
+                ->label('Grupo'),
+            Tables\Grouping\Group::make('categoria')
+                ->label('Categoría'),
+        ])
         ->filters([
             Tables\Filters\TernaryFilter::make('activo')->label('Activos'),
         ])

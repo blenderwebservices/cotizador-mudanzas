@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
 {
@@ -38,5 +39,15 @@ class Item extends Model
     public function quoteItems(): HasMany
     {
         return $this->hasMany(QuoteItem::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'categoria', 'name');
+    }
+
+    public function groupCategory(): BelongsTo
+    {
+        return $this->belongsTo(GroupCategory::class, 'grupo_categoria', 'name');
     }
 }

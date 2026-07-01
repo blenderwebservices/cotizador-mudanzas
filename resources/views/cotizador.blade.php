@@ -383,9 +383,37 @@
                     <span class="text-sm text-gray-400">Cargando catálogo...</span>
                 </div>
 
+                <!-- Group and Category Selectors -->
+                <div x-show="!loadingItems" class="space-y-3 pb-1">
+                    <!-- Groups Pill Bar -->
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none" style="-webkit-overflow-scrolling: touch;">
+                        <template x-for="group in getGroups()" :key="group">
+                            <button @click="selectGroup(group)" 
+                                    type="button"
+                                    :class="selectedGroup === group ? 'bg-brand text-white border-brand shadow-[0_0_12px_rgba(237,52,38,0.3)]' : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'"
+                                    class="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0">
+                                <span x-text="group"></span>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Categories Pill Bar -->
+                    <div x-show="getCategories().length > 2" class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" style="-webkit-overflow-scrolling: touch;">
+                        <span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold pr-1 flex-shrink-0">Filtro:</span>
+                        <template x-for="category in getCategories()" :key="category">
+                            <button @click="selectedCategory = category" 
+                                    type="button"
+                                    :class="selectedCategory === category ? 'bg-brand-neon/25 text-brand-neon border-brand-neon/40 shadow-[0_0_8px_rgba(237,52,38,0.15)]' : 'bg-white/5 text-gray-400 border-white/5 hover:bg-white/10'"
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-semibold border transition-all whitespace-nowrap flex-shrink-0">
+                                <span x-text="category"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
                 <!-- Items Grid -->
-                <div x-show="!loadingItems" class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto pb-2 pr-1" style="max-height: 400px;">
-                    <template x-for="item in inventory" :key="item.id">
+                <div x-show="!loadingItems" class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto pb-2 pr-1" style="max-height: 380px;">
+                    <template x-for="item in getFilteredItems()" :key="item.id">
                         <div class="item-card rounded-2xl p-3 flex flex-col items-center text-center gap-2 relative"
                              :class="{ 'selected': item.count > 0 }">
                             <!-- Glow when selected -->
@@ -589,6 +617,8 @@
             suggestions: [],
             activeInput: null,
             loadingSuggestions: false,
+            selectedGroup: 'Todos',
+            selectedCategory: 'Todas',
 
             async init() {
                 // Items are loaded lazily when we reach step 6
@@ -632,6 +662,33 @@
                 } finally {
                     this.loadingSuggestions = false;
                 }
+            },
+
+            getGroups() {
+                if (this.inventory.length === 0) return ['Todos'];
+                return ['Todos', ...new Set(this.inventory.map(item => item.grupo_categoria).filter(Boolean))];
+            },
+
+            getCategories() {
+                if (this.inventory.length === 0) return ['Todas'];
+                let items = this.inventory;
+                if (this.selectedGroup !== 'Todos') {
+                    items = items.filter(item => item.grupo_categoria === this.selectedGroup);
+                }
+                return ['Todas', ...new Set(items.map(item => item.categoria).filter(Boolean))];
+            },
+
+            selectGroup(group) {
+                this.selectedGroup = group;
+                this.selectedCategory = 'Todas';
+            },
+
+            getFilteredItems() {
+                return this.inventory.filter(item => {
+                    const matchesGroup = this.selectedGroup === 'Todos' || item.grupo_categoria === this.selectedGroup;
+                    const matchesCategory = this.selectedCategory === 'Todas' || item.categoria === this.selectedCategory;
+                    return matchesGroup && matchesCategory;
+                });
             },
 
             getTotalItems() {
@@ -760,6 +817,8 @@
                 this.suggestions = [];
                 this.activeInput = null;
                 this.loadingSuggestions = false;
+                this.selectedGroup = 'Todos';
+                this.selectedCategory = 'Todas';
             },
 
             formatCurrency(amount) {

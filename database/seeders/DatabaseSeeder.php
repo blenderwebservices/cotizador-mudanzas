@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Agent;
 use App\Models\Item;
 use App\Models\Vehicle;
+use App\Models\Category;
+use App\Models\GroupCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -83,6 +85,18 @@ class DatabaseSeeder extends Seeder
             $items = json_decode(file_get_contents($jsonPath), true);
         } else {
             $items = [];
+        }
+
+        // Seed unique categories
+        $categories = collect($items)->pluck('categoria')->filter()->unique();
+        foreach ($categories as $cat) {
+            Category::firstOrCreate(['name' => $cat]);
+        }
+
+        // Seed unique group categories
+        $groups = collect($items)->pluck('grupo_categoria')->filter()->unique();
+        foreach ($groups as $grp) {
+            GroupCategory::firstOrCreate(['name' => $grp]);
         }
 
         foreach ($items as $item) {
