@@ -194,7 +194,33 @@
                 </div>
                 <div class="relative">
                     <span class="material-symbols-rounded absolute left-4 top-4 text-gray-500">my_location</span>
-                    <input type="text" id="input-origin" x-model="data.origin" @keydown.enter="next()" placeholder="Ingresa dirección de origen completa..." class="w-full text-lg p-4 pl-12 rounded-xl input-cyber">
+                    <input type="text" id="input-origin" x-model="data.origin" 
+                           @input.debounce.300ms="fetchSuggestions('origin')"
+                           @focus="activeInput = 'origin'; if (data.origin.trim().length >= 3) fetchSuggestions('origin')"
+                           @keydown.enter="next()" 
+                           placeholder="Ingresa dirección de origen completa..." 
+                           class="w-full text-lg p-4 pl-12 pr-12 rounded-xl input-cyber"
+                           autocomplete="off">
+                    
+                    <!-- Loading spinner -->
+                    <div x-show="loadingSuggestions && activeInput === 'origin'" 
+                         class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+                        <div class="w-5 h-5 border-2 border-brand-neon border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <!-- Suggestions Dropdown -->
+                    <div x-show="activeInput === 'origin' && suggestions.length > 0" 
+                         @click.away="activeInput = null"
+                         class="absolute z-50 left-0 right-0 mt-2 bg-slate-950/95 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-60 overflow-y-auto">
+                        <template x-for="item in suggestions">
+                            <button @click="data.origin = item; suggestions = []; activeInput = null;" 
+                                    type="button"
+                                    class="w-full text-left px-4 py-3 hover:bg-white/10 hover:text-brand-neon text-sm text-gray-200 transition-colors flex items-center gap-3 border-b border-white/5 last:border-0">
+                                <span class="material-symbols-rounded text-gray-400 text-base">location_on</span>
+                                <span x-text="item"></span>
+                            </button>
+                        </template>
+                    </div>
                 </div>
             </div>
 
@@ -206,7 +232,33 @@
                 </div>
                 <div class="relative">
                     <span class="material-symbols-rounded absolute left-4 top-4 text-brand-neon">location_on</span>
-                    <input type="text" id="input-dest" x-model="data.destination" @keydown.enter="next()" placeholder="Ingresa dirección de destino completa..." class="w-full text-lg p-4 pl-12 rounded-xl input-cyber">
+                    <input type="text" id="input-dest" x-model="data.destination" 
+                           @input.debounce.300ms="fetchSuggestions('destination')"
+                           @focus="activeInput = 'destination'; if (data.destination.trim().length >= 3) fetchSuggestions('destination')"
+                           @keydown.enter="next()" 
+                           placeholder="Ingresa dirección de destino completa..." 
+                           class="w-full text-lg p-4 pl-12 pr-12 rounded-xl input-cyber"
+                           autocomplete="off">
+
+                    <!-- Loading spinner -->
+                    <div x-show="loadingSuggestions && activeInput === 'destination'" 
+                         class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+                        <div class="w-5 h-5 border-2 border-brand-neon border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <!-- Suggestions Dropdown -->
+                    <div x-show="activeInput === 'destination' && suggestions.length > 0" 
+                         @click.away="activeInput = null"
+                         class="absolute z-50 left-0 right-0 mt-2 bg-slate-950/95 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-60 overflow-y-auto">
+                        <template x-for="item in suggestions">
+                            <button @click="data.destination = item; suggestions = []; activeInput = null;" 
+                                    type="button"
+                                    class="w-full text-left px-4 py-3 hover:bg-white/10 hover:text-brand-neon text-sm text-gray-200 transition-colors flex items-center gap-3 border-b border-white/5 last:border-0">
+                                <span class="material-symbols-rounded text-gray-400 text-base">location_on</span>
+                                <span x-text="item"></span>
+                            </button>
+                        </template>
+                    </div>
                 </div>
             </div>
 
@@ -534,6 +586,9 @@
             loadingItems: false,
             results: {},
             errorMessage: '',
+            suggestions: [],
+            activeInput: null,
+            loadingSuggestions: false,
 
             async init() {
                 // Items are loaded lazily when we reach step 6
@@ -555,6 +610,27 @@
                     console.error('Error loading items:', e);
                 } finally {
                     this.loadingItems = false;
+                }
+            },
+
+            async fetchSuggestions(field) {
+                const query = this.data[field];
+                if (!query || query.trim().length < 3) {
+                    this.suggestions = [];
+                    return;
+                }
+                this.loadingSuggestions = true;
+                this.activeInput = field;
+                try {
+                    const response = await fetch(`/api/autocomplete?query=${encodeURIComponent(query)}`);
+                    const results = await response.json();
+                    if (this.activeInput === field) {
+                        this.suggestions = results;
+                    }
+                } catch (e) {
+                    console.error('Error fetching suggestions:', e);
+                } finally {
+                    this.loadingSuggestions = false;
                 }
             },
 
@@ -681,6 +757,9 @@
                 this.inventory = [];
                 this.results = {};
                 this.errorMessage = '';
+                this.suggestions = [];
+                this.activeInput = null;
+                this.loadingSuggestions = false;
             },
 
             formatCurrency(amount) {

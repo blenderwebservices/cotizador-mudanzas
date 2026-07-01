@@ -220,9 +220,57 @@ class QuoteCalculator
     }
 
     /**
-     * Ask Gemini API to estimate the driving distance and travel time.
+     * Ask Google Maps Distance Matrix API or fallback to Gemini API to estimate the driving distance and travel time.
      */
     private function estimateDistanceAndTime(string $origin, string $destination): array
+    {
+        $googleKey = config('services.google.maps_api_key');
+        if (!empty($googleKey)) {
+            try {
+                $response = Http::timeout(10)->get('https://maps.googleapis.com/maps/api/distancematrix/json', [
+                    'origins' => $origin,
+                    'destinations' => $destination,
+                    'key' => $googleKey,
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (($data['status'] ?? '') === 'OK' && !empty($data['rows'][0]['elements'][0])) {
+                        $element = $data['rows'][0]['elements'][0];
+                        if (($element['status'] ?? '') === 'OK') {
+                            $distanceMeters = $element['distance']['value'];
+                            $durationSeconds = $element['duration']['value'];
+                            return [
+                                'distancia_km' => max(1.0, round($distanceMeters / 1000, 2)),
+                                'tiempo_traslado_horas' => max(0.2, round($durationSeconds / 3600, 2)),
+                            ];
+                        } else {
+                            Log::warning('Google Maps Distance Matrix element status is not OK: ' . ($element['status'] ?? 'unknown'));
+                        }
+                    } else {
+                        Log::error('Google Maps Distance Matrix API returned error status: ' . ($data['status'] ?? 'unknown'));
+                    }
+                } else {
+                    Log::error('Google Maps Distance Matrix HTTP request failed.', [
+                        'status' => $response->status(),
+                        'body' => $response->body()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Exception caught during Google Maps distance calculation: ' . $e->getMessage());
+            }
+        } else {
+            Log::info('Google Maps API key is not configured. Falling back to Gemini API.');
+        }
+
+        // Fallback to Gemini
+        return $this->estimateDistanceAndTimeViaGemini($origin, $destination);
+    }
+
+    /**
+     * Ask Gemini API to estimate the driving distance and travel time.
+     */
+    private function estimateDistanceAndTimeViaGemini(string $origin, string $destination): array
     {
         $apiKey = config('gemini.api_key');
         $model = config('gemini.model', 'gemini-3.5-flash-lite-preview');

@@ -9,6 +9,8 @@ use App\Models\Agent;
 use App\Services\QuoteCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -385,6 +387,121 @@ class QuoteController extends Controller
         
         $writer->save('php://output');
         exit;
+    }
+
+    /**
+     * Get address suggestions based on query input (incremental search)
+     */
+    public function autocomplete(Request $request)
+    {
+        $input = $request->query('query');
+        if (empty($input)) {
+            return response()->json([]);
+        }
+
+        $googleKey = config('services.google.maps_api_key');
+        if (!empty($googleKey)) {
+            try {
+                $response = Http::timeout(5)->get('https://maps.googleapis.com/maps/api/place/autocomplete/json', [
+                    'input' => $input,
+                    'key' => $googleKey,
+                    'language' => 'es',
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (($data['status'] ?? '') === 'OK' && !empty($data['predictions'])) {
+                        $suggestions = array_map(function ($prediction) {
+                            return $prediction['description'];
+                        }, $data['predictions']);
+                        
+                        return response()->json($suggestions);
+                    } else {
+                        Log::warning('Google Places Autocomplete status was not OK: ' . ($data['status'] ?? 'unknown'));
+                    }
+                } else {
+                    Log::error('Google Places Autocomplete HTTP request failed.', [
+                        'status' => $response->status(),
+                        'body' => $response->body()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Autocomplete Google Places API exception: ' . $e->getMessage());
+            }
+        }
+
+        // Fallback to Gemini if Google Maps key is missing or fails
+        return $this->autocompleteViaGemini($input);
+    }
+
+    /**
+     * Fallback autocomplete using Gemini API to suggest realistic addresses.
+     */
+    private function autocompleteViaGemini(string $input): \Illuminate\Http\JsonResponse
+    {
+        $apiKey = config('gemini.api_key');
+        $model = config('gemini.model', 'gemini-3.5-flash-lite-preview');
+        
+        if (empty($apiKey)) {
+            Log::warning('Gemini API key is not configured for autocomplete fallback.');
+            return response()->json([
+                $input . ', Ciudad de México, CDMX, México',
+                $input . ', Guadalajara, Jalisco, México',
+                $input . ', Monterrey, Nuevo León, México',
+            ]);
+        }
+
+        $prompt = "Actúa como un servicio de autocompletado de direcciones. El usuario está escribiendo la siguiente dirección parcial: \"{$input}\".
+        Genera una lista de 5 direcciones reales o sumamente realistas en México que comiencen o contengan esta cadena.
+        Debes retornar estrictamente un arreglo JSON de strings (ej. [\"Dirección 1\", \"Dirección 2\"]).
+        No incluyas explicaciones, no incluyas marcas de markdown de bloque de código, solo el arreglo JSON crudo.";
+
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
+
+        try {
+            $response = Http::timeout(5)->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ],
+                'generationConfig' => [
+                    'responseMimeType' => 'application/json'
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $textResponse = $data['candidates'][0]['content']['parts'][0]['text'] ?? '[]';
+                
+                $cleanJson = trim($textResponse);
+                if (str_starts_with($cleanJson, '```')) {
+                    $cleanJson = preg_replace('/^```(?:json)?\s*/i', '', $cleanJson);
+                    $cleanJson = preg_replace('/\s*```$/', '', $cleanJson);
+                }
+                
+                $parsed = json_decode($cleanJson, true);
+                if (is_array($parsed)) {
+                    return response()->json(array_slice($parsed, 0, 5));
+                }
+            }
+            
+            Log::error('Gemini API returned an invalid response format or failed for autocomplete.', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Autocomplete Gemini fallback exception: ' . $e->getMessage());
+        }
+
+        // Final fallback if both fail
+        return response()->json([
+            $input . ', Ciudad de México, CDMX, México',
+            $input . ', Monterrey, Nuevo León, México',
+            $input . ', Guadalajara, Jalisco, México',
+        ]);
     }
 }
 

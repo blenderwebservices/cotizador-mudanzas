@@ -9,6 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/api/items', [QuoteController::class, 'getItems']);
+Route::get('/api/autocomplete', [QuoteController::class, 'autocomplete']);
 Route::post('/api/quotes', [QuoteController::class, 'store']);
 
 // PDF generation routes (existing)
