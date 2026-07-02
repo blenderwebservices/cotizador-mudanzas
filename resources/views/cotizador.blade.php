@@ -154,7 +154,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto p-6 sm:p-8">
+        <main class="flex-1 p-6 sm:p-8" :class="activeInput ? 'overflow-visible' : 'overflow-y-auto'">
 
             <!-- STEP 1: Name -->
             <div x-show="step === 1" class="step-enter flex flex-col justify-center min-h-full space-y-6">

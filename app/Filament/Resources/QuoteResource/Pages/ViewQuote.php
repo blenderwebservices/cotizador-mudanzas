@@ -4,9 +4,9 @@ namespace App\Filament\Resources\QuoteResource\Pages;
 
 use App\Filament\Resources\QuoteResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditQuote extends EditRecord
+class ViewQuote extends ViewRecord
 {
     protected static string $resource = QuoteResource::class;
 
@@ -25,7 +25,7 @@ class EditQuote extends EditRecord
                 ->color('success')
                 ->url(fn (): string => route('quotes.excel.admin', ['quoteId' => $this->record->id]))
                 ->openUrlInNewTab(),
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }

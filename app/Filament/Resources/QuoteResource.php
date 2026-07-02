@@ -26,11 +26,11 @@ class QuoteResource extends Resource
         return $form->schema([
             Forms\Components\Section::make('Datos del Cliente')
                 ->schema([
-                    Forms\Components\TextInput::make('nombre_cliente')->label('Nombre')->disabled(),
-                    Forms\Components\TextInput::make('email_cliente')->label('Email')->disabled(),
-                    Forms\Components\TextInput::make('telefono_cliente')->label('Teléfono')->disabled(),
-                    Forms\Components\Textarea::make('origen')->label('Origen')->disabled()->columnSpanFull(),
-                    Forms\Components\Textarea::make('destino')->label('Destino')->disabled()->columnSpanFull(),
+                    Forms\Components\TextInput::make('nombre_cliente')->label('Nombre')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('email_cliente')->label('Email')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('telefono_cliente')->label('Teléfono')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\Textarea::make('origen')->label('Origen')->disabled(fn (string $operation): bool => $operation === 'view')->columnSpanFull(),
+                    Forms\Components\Textarea::make('destino')->label('Destino')->disabled(fn (string $operation): bool => $operation === 'view')->columnSpanFull(),
                 ])->columns(3),
 
             Forms\Components\Section::make('Asignación de Agente')
@@ -45,65 +45,65 @@ class QuoteResource extends Resource
 
             Forms\Components\Section::make('Resumen Logístico')
                 ->schema([
-                    Forms\Components\TextInput::make('distancia_km')->label('Distancia (km)')->disabled(),
-                    Forms\Components\TextInput::make('tiempo_traslado_horas')->label('Tiempo traslado (hrs)')->disabled(),
-                    Forms\Components\TextInput::make('volumen_total_m3')->label('Volumen total (m³)')->disabled(),
-                    Forms\Components\TextInput::make('personas_sugeridas')->label('Personas sugeridas')->disabled(),
+                    Forms\Components\TextInput::make('distancia_km')->label('Distancia (km)')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('tiempo_traslado_horas')->label('Tiempo traslado (hrs)')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('volumen_total_m3')->label('Volumen total (m³)')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('personas_sugeridas')->label('Personas sugeridas')->disabled(fn (string $operation): bool => $operation === 'view'),
                     Forms\Components\Select::make('vehiculo_sugerido_id')
                         ->label('Vehículo sugerido')
                         ->relationship('vehiculoSugerido', 'nombre')
-                        ->disabled(),
+                        ->disabled(fn (string $operation): bool => $operation === 'view'),
                 ])->columns(3),
 
             Forms\Components\Section::make('Complejidad Logística (Drivers ABC)')
                 ->schema([
-                    Forms\Components\TextInput::make('pisos_origen')->label('Pisos Origen')->disabled(),
-                    Forms\Components\TextInput::make('distancia_caminata_origen_m')->label('Caminata Origen (m)')->suffix('m')->disabled(),
+                    Forms\Components\TextInput::make('pisos_origen')->label('Pisos Origen')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('distancia_caminata_origen_m')->label('Caminata Origen (m)')->suffix('m')->disabled(fn (string $operation): bool => $operation === 'view'),
                     Forms\Components\Placeholder::make('ascensor_origen_placeholder')
                         ->label('Ascensor Origen')
                         ->content(fn ($record) => ($record && $record->detalles_json && ($record->detalles_json['elevatorStart'] ?? 'no') === 'yes') ? 'Sí' : 'No'),
 
-                    Forms\Components\TextInput::make('pisos_destino')->label('Pisos Destino')->disabled(),
-                    Forms\Components\TextInput::make('distancia_caminata_destino_m')->label('Caminata Destino (m)')->suffix('m')->disabled(),
-                    Forms\Components\Toggle::make('ascensor_destino')->label('Ascensor Destino')->disabled(),
+                    Forms\Components\TextInput::make('pisos_destino')->label('Pisos Destino')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\TextInput::make('distancia_caminata_destino_m')->label('Caminata Destino (m)')->suffix('m')->disabled(fn (string $operation): bool => $operation === 'view'),
+                    Forms\Components\Toggle::make('ascensor_destino')->label('Ascensor Destino')->disabled(fn (string $operation): bool => $operation === 'view'),
                 ])->columns(3),
 
             Forms\Components\Section::make('Desglose de Actividades ABC')
                 ->schema([
                     Forms\Components\TextInput::make('costo_actividad_comercial')
                         ->label('Actividad A: Comercial y Planificación')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('costo_actividad_embalaje')
                         ->label('Actividad B: Embalaje y Preparación')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('costo_actividad_carga')
                         ->label('Actividad C: Carga y Estiba')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('costo_actividad_transporte')
                         ->label('Actividad D: Transporte (Conducción)')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('costo_actividad_descarga')
                         ->label('Actividad E: Descarga y Desembalaje')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
 
                     Forms\Components\Placeholder::make('space')->label('')->columnSpan(1),
 
                     Forms\Components\TextInput::make('gastos_totales')
                         ->label('Costo Operativo Total (Gastos)')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('ganancia_estimada')
                         ->label('Ganancia Estimada')
-                        ->prefix('$')->disabled(),
+                        ->prefix('$')->disabled(fn (string $operation): bool => $operation === 'view'),
                     
                     Forms\Components\TextInput::make('precio_sugerido')
                         ->label('PRECIO SUGERIDO')
                         ->prefix('$')
-                        ->disabled()
+                        ->disabled(fn (string $operation): bool => $operation === 'view')
                         ->extraAttributes(['class' => 'font-bold text-primary-600']),
                 ])->columns(3),
         ]);
@@ -151,7 +151,14 @@ class QuoteResource extends Resource
         ])
         ->defaultSort('created_at', 'desc')
         ->actions([
-            Tables\Actions\EditAction::make()->label('Ver / Editar'),
+            Tables\Actions\ViewAction::make()->label('Ver'),
+            Tables\Actions\EditAction::make()->label('Editar'),
+            Tables\Actions\Action::make('descargar_pdf_cliente')
+                ->label('PDF')
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('primary')
+                ->url(fn (Quote $record): string => route('quotes.pdf.client', ['quoteId' => $record->id]))
+                ->openUrlInNewTab(),
             Tables\Actions\Action::make('descargar_excel')
                 ->label('Excel')
                 ->icon('heroicon-o-document-arrow-down')
@@ -167,6 +174,7 @@ class QuoteResource extends Resource
         return [
             'index' => Pages\ListQuotes::route('/'),
             'create' => Pages\CreateQuote::route('/create'),
+            'view' => Pages\ViewQuote::route('/{record}'),
             'edit' => Pages\EditQuote::route('/{record}/edit'),
         ];
     }
